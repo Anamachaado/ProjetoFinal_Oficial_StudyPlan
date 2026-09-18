@@ -1,0 +1,395 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Meu Perfil</title>
+
+<link rel="stylesheet" href="{% static 'EdicaoPerfil/EdicaoPerfil.css' %}">
+<link rel="stylesheet" href="{% static 'PaginaHome/PaginaHome.css' %}">
+
+</head>
+
+<body>
+
+<div class="conteudo-da-pagina">
+
+<section class="area-perfil">
+
+    <div class="cartao-perfil">
+
+        <div class="cabecalho-perfil">
+
+            <div>
+
+                <h1>Meu Perfil</h1>
+
+                <p>
+                       Confira e atualize suas informações pessoais e acadêmicas
+                </p>
+
+            </div>
+
+
+        </div>
+
+        <div class="conteudo-perfil">
+
+            <div class="lado-direito">
+
+                <section class="secao-informacao">
+
+                    <h3>
+                        Pessoais
+                    </h3>
+
+                    <div class="linha-campos">
+
+                        <div class="campo">
+
+                            <label>
+                                Apelido
+                            </label>
+
+                            <div
+                                class="caixa-informacao"
+                                id="campo-nome"
+                            >
+
+                                <span id="nome-exibido">
+
+                                    {{ user.username }}
+
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="nome-input"
+                                    name="nome"
+                                    value="{{ user.username }}"
+                                    style="display: none;"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label>
+                                E-mail cadastrado
+                            </label>
+
+                            <div
+                                class="caixa-informacao"
+                                id="campo-email"
+                            >
+
+                                <span id="email-exibido">
+
+                                    {{ user.email }}
+
+                                </span>
+
+                                <input
+                                    type="email"
+                                    id="email-input"
+                                    name="email"
+                                    value="{{ user.email }}"
+                                    style="display: none;"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="secao-informacao">
+
+                    <h3>
+                        Acadêmicos
+                    </h3>
+
+
+                    <div class="linha-campos">
+
+                        <div class="campo">
+
+                            <label>
+                                Curso
+                            </label>
+
+                            <div class="caixa-informacao">
+
+                                {% if user.curso %}
+
+                                    {{ user.curso.nome }}
+
+                                {% else %}
+
+                                    Não informado
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            class="botao-editar"
+                            id="botao-editar"
+                            onclick="ativarEdicao()"
+                        >
+                            Editar Perfil
+                        </button>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+
+<script>
+
+    const nomeUsuario = "{{ user.username }}";
+
+    const cursoUsuario = "{% if user.curso %}{{ user.curso.nome }}{% else %}Não informado{% endif %}";
+
+    const urlHome = "{% url 'home' %}";
+
+    const urlPerfil = "{% url 'perfil' %}";
+
+    const urlTarefas = "{% url 'tarefas' %}";
+
+    const urlDuvidas = "{% url 'duvidas' %}";
+
+    const urlEstatisticas = "{% url 'estatisticas' %}";
+
+    const urlManual = "{% url 'manual' %}";
+
+</script>
+
+<script>
+
+    function ativarEdicao() {
+
+        const nomeExibido =
+            document.getElementById("nome-exibido");
+
+        const nomeInput =
+            document.getElementById("nome-input");
+
+        const emailExibido =
+            document.getElementById("email-exibido");
+
+        const emailInput =
+            document.getElementById("email-input");
+
+        const campoNome =
+            document.getElementById("campo-nome");
+
+        const campoEmail =
+            document.getElementById("campo-email");
+
+        const botao =
+            document.getElementById("botao-editar");
+
+
+        nomeExibido.style.display = "none";
+
+        nomeInput.style.display = "block";
+
+        campoNome.classList.add("editando");
+
+
+        emailExibido.style.display = "none";
+
+        emailInput.style.display = "block";
+
+        campoEmail.classList.add("editando");
+
+
+        botao.textContent = "Salvar Alterações";
+
+        botao.onclick = salvarEdicao;
+
+    }
+
+
+    async function salvarEdicao() {
+
+        const nomeInput =
+            document.getElementById("nome-input");
+
+        const emailInput =
+            document.getElementById("email-input");
+
+
+        const dados = new FormData();
+
+        dados.append("nome", nomeInput.value);
+
+        dados.append("email", emailInput.value);
+
+
+        try {
+
+            const resposta =
+                await fetch(
+                    "{% url 'atualizar_perfil' %}",
+                    {
+                        method: "POST",
+
+                        body: dados,
+
+                        headers: {
+                            "X-CSRFToken": obterCsrfToken()
+                        }
+                    }
+                );
+
+
+            const resultado =
+                await resposta.json();
+
+
+            if (!resposta.ok) {
+
+                throw new Error(
+                    resultado.erro ||
+                    "Não foi possível salvar."
+                );
+
+            }
+
+
+            document.getElementById(
+                "nome-exibido"
+            ).textContent = resultado.nome;
+
+
+            document.getElementById(
+                "email-exibido"
+            ).textContent = resultado.email;
+
+
+            nomeInput.value =
+                resultado.nome;
+
+            emailInput.value =
+                resultado.email;
+
+
+            nomeInput.style.display = "none";
+
+            document.getElementById(
+                "nome-exibido"
+            ).style.display = "inline";
+
+
+            emailInput.style.display = "none";
+
+            document.getElementById(
+                "email-exibido"
+            ).style.display = "inline";
+
+
+            document.getElementById(
+                "campo-nome"
+            ).classList.remove("editando");
+
+
+            document.getElementById(
+                "campo-email"
+            ).classList.remove("editando");
+
+
+            const botao =
+                document.getElementById(
+                    "botao-editar"
+                );
+
+
+            botao.textContent =
+                "Editar Perfil";
+
+
+            botao.onclick =
+                ativarEdicao;
+
+        }
+
+        catch (erro) {
+
+            console.error(erro);
+
+            alert(
+                erro.message ||
+                "Não foi possível salvar as alterações."
+            );
+
+        }
+
+    }
+
+
+    function obterCsrfToken() {
+
+        const nome =
+            "csrftoken=";
+
+        const partes =
+            document.cookie.split(";");
+
+
+        for (let parte of partes) {
+
+            parte =
+                parte.trim();
+
+
+            if (
+                parte.startsWith(nome)
+            ) {
+
+                return parte.substring(
+                    nome.length
+                );
+
+            }
+
+        }
+
+
+        return "";
+
+    }
+
+</script>
+
+<script src="{% static 'PaginaHome/menu.js' %}"></script>
+
+</body>
+
+</html>

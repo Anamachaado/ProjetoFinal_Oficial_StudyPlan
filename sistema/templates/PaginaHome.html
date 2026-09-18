@@ -1,0 +1,851 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyPlan | Suas Notas</title>
+
+    <link rel="stylesheet" href="{% static 'PaginaHome/PaginaHome.css' %}">
+
+    <style>
+
+        .conteudo-da-pagina {
+            padding: 40px;
+        }
+
+        .tabela-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 30px;
+        }
+
+        .tabela-notas {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .tabela-notas th,
+        .tabela-notas td {
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .tabela-notas th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+
+        .tabela-notas th:first-child,
+        .tabela-notas td:first-child {
+            text-align: left;
+        }
+
+        .celula-bimestre {
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+
+        .celula-bimestre:hover {
+            background: #eeeeee;
+            transform: scale(1.02);
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .falta {
+            font-weight: bold;
+        }
+
+        .sem-disciplinas {
+            margin-top: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal-fundo {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            width: 90%;
+            max-width: 420px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal h2 {
+            margin-top: 0;
+        }
+
+        .modal p {
+            margin-bottom: 20px;
+        }
+
+        .modal input,
+        .modal select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .modal-botoes {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .modal-botoes button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn-cancelar {
+            background: #eeeeee;
+        }
+
+        .btn-salvar {
+            background: #222;
+            color: white;
+        }
+
+        /* =========================
+           HISTÓRICO
+        ========================= */
+
+        .historico-atividades {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f7f7f7;
+            border-radius: 10px;
+        }
+
+        .historico-atividades h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .lista-atividades {
+            max-height: 160px;
+            overflow-y: auto;
+        }
+
+        .atividade-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .atividade-item:last-child {
+            border-bottom: none;
+        }
+
+        .atividade-nome {
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .atividade-valor {
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .total-modal {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 2px solid #ddd;
+            text-align: right;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="conteudo-da-pagina">
+
+        <h1>Suas Notas</h1>
+
+        {% if tabela %}
+
+        <div class="tabela-container">
+
+            <table class="tabela-notas">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Nome</th>
+
+                        <th>Bim. 1</th>
+
+                        <th>Bim. 2</th>
+
+                        <th>Bim. 3</th>
+
+                        <th>Bim. 4</th>
+
+                        <th>Total que você tem</th>
+
+                        <th>Quanto falta para 60</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for disciplina in tabela %}
+
+                    <tr>
+
+                        <td>
+                            {{ disciplina.nome }}
+                        </td>
+
+                        <td
+                            class="celula-bimestre"
+                            onclick="abrirModal(
+                                '{{ disciplina.id }}',
+                                '{{ disciplina.nome|escapejs }}',
+                                '1'
+                            )"
+                        >
+                            {{ disciplina.bim1 }}
+                        </td>
+
+                        <td
+                            class="celula-bimestre"
+                            onclick="abrirModal(
+                                '{{ disciplina.id }}',
+                                '{{ disciplina.nome|escapejs }}',
+                                '2'
+                            )"
+                        >
+                            {{ disciplina.bim2 }}
+                        </td>
+
+                        <td
+                            class="celula-bimestre"
+                            onclick="abrirModal(
+                                '{{ disciplina.id }}',
+                                '{{ disciplina.nome|escapejs }}',
+                                '3'
+                            )"
+                        >
+                            {{ disciplina.bim3 }}
+                        </td>
+
+                        <td
+                            class="celula-bimestre"
+                            onclick="abrirModal(
+                                '{{ disciplina.id }}',
+                                '{{ disciplina.nome|escapejs }}',
+                                '4'
+                            )"
+                        >
+                            {{ disciplina.bim4 }}
+                        </td>
+
+                        <td class="total">
+                            {{ disciplina.total }}
+                        </td>
+
+                        <td class="falta">
+                            {{ disciplina.falta }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="sem-disciplinas">
+
+            <p>
+                Você ainda não possui disciplinas selecionadas.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =========================
+         MODAL
+    ========================= -->
+
+    <div
+        id="modal-fundo"
+        class="modal-fundo"
+        onclick="fecharModalFundo(event)"
+    >
+
+        <div
+            class="modal"
+            onclick="event.stopPropagation()"
+        >
+
+            <h2>
+                Adicionar atividade
+            </h2>
+
+
+            <p id="modal-disciplina"></p>
+
+
+            <!-- =========================
+                 HISTÓRICO
+            ========================= -->
+
+            <div class="historico-atividades">
+
+                <h3>
+                    Trabalhos cadastrados
+                </h3>
+
+                <div
+                    id="lista-atividades"
+                    class="lista-atividades"
+                >
+
+                    <p>
+                        Nenhum trabalho cadastrado.
+                    </p>
+
+                </div>
+
+
+                <div class="total-modal">
+
+                    Total do bimestre:
+
+                    <strong id="total-bimestre">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 FORMULÁRIO
+            ========================= -->
+
+            <form id="form-atividade">
+
+                {% csrf_token %}
+
+
+                <input
+                    type="hidden"
+                    id="atividade-disciplina"
+                >
+
+
+                <input
+                    type="hidden"
+                    id="atividade-bimestre"
+                >
+
+
+                <label>
+                    Nome da atividade
+                </label>
+
+
+                <input
+                    type="text"
+                    id="atividade-nome"
+                    placeholder="Ex.: Prova de Matemática"
+                    required
+                >
+
+
+                <label>
+                    Valor
+                </label>
+
+
+                <input
+                    type="number"
+                    id="atividade-valor"
+                    placeholder="Ex.: 10"
+                    min="0"
+                    step="0.01"
+                    required
+                >
+
+
+                <div class="modal-botoes">
+
+                    <button
+                        type="button"
+                        class="btn-cancelar"
+                        onclick="fecharModal()"
+                    >
+                        Cancelar
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="btn-salvar"
+                    >
+                        Salvar
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const nomeUsuario =
+            "{{ user.username }}";
+
+
+        const cursoUsuario =
+            "{% if user.curso %}{{ user.curso.nome }}{% else %}Não informado{% endif %}";
+
+
+        const urlHome =
+            "{% url 'home' %}";
+
+
+        const urlPerfil =
+            "{% url 'perfil' %}";
+
+
+        const urlTarefas =
+            "{% url 'tarefas' %}";
+
+
+        const urlDuvidas =
+            "{% url 'duvidas' %}";
+
+
+        const urlEstatisticas =
+            "{% url 'estatisticas' %}";
+
+
+        const urlManual =
+            "{% url 'manual' %}";
+
+
+        /* =========================
+           ABRIR MODAL
+        ========================= */
+
+        function abrirModal(
+            disciplinaId,
+            disciplinaNome,
+            bimestre
+        ) {
+
+            document.getElementById(
+                "atividade-disciplina"
+            ).value = disciplinaId;
+
+
+            document.getElementById(
+                "atividade-bimestre"
+            ).value = bimestre;
+
+
+            document.getElementById(
+                "modal-disciplina"
+            ).textContent =
+                disciplinaNome +
+                " — " +
+                bimestre +
+                "º Bimestre";
+
+
+            document.getElementById(
+                "atividade-nome"
+            ).value = "";
+
+
+            document.getElementById(
+                "atividade-valor"
+            ).value = "";
+
+
+            const lista =
+                document.getElementById(
+                    "lista-atividades"
+                );
+
+
+            const total =
+                document.getElementById(
+                    "total-bimestre"
+                );
+
+
+            lista.innerHTML =
+                "<p>Carregando histórico...</p>";
+
+
+            total.textContent = "0";
+
+
+            document.getElementById(
+                "modal-fundo"
+            ).style.display = "flex";
+
+
+            /* =========================
+               BUSCA HISTÓRICO
+            ========================= */
+
+            fetch(
+                "{% url 'listar_atividades' %}" +
+                "?disciplina=" +
+                encodeURIComponent(disciplinaId) +
+                "&bimestre=" +
+                encodeURIComponent(bimestre)
+            )
+
+            .then(response => {
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Erro HTTP: " +
+                        response.status
+                    );
+
+                }
+
+                return response.json();
+
+            })
+
+            .then(data => {
+
+                lista.innerHTML = "";
+
+
+                if (
+                    !data.atividades ||
+                    data.atividades.length === 0
+                ) {
+
+                    const vazio =
+                        document.createElement("p");
+
+
+                    vazio.textContent =
+                        "Nenhum trabalho cadastrado.";
+
+
+                    lista.appendChild(vazio);
+
+                }
+
+                else {
+
+                    data.atividades.forEach(
+                        atividade => {
+
+                            const item =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            item.className =
+                                "atividade-item";
+
+
+                            const nome =
+                                document.createElement(
+                                    "span"
+                                );
+
+
+                            nome.className =
+                                "atividade-nome";
+
+
+                            nome.textContent =
+                                atividade.nome;
+
+
+                            const valor =
+                                document.createElement(
+                                    "span"
+                                );
+
+
+                            valor.className =
+                                "atividade-valor";
+
+
+                            valor.textContent =
+                                Number(
+                                    atividade.valor
+                                ).toLocaleString(
+                                    "pt-BR",
+                                    {
+                                        maximumFractionDigits: 2
+                                    }
+                                ) +
+                                " pts";
+
+
+                            item.appendChild(nome);
+
+                            item.appendChild(valor);
+
+                            lista.appendChild(item);
+
+                        }
+                    );
+
+                }
+
+
+                total.textContent =
+                    Number(
+                        data.total_bimestre || 0
+                    ).toLocaleString(
+                        "pt-BR",
+                        {
+                            maximumFractionDigits: 2
+                        }
+                    );
+
+            })
+
+            .catch(error => {
+
+                console.error(error);
+
+
+                lista.innerHTML =
+                    "<p>Não foi possível carregar o histórico.</p>";
+
+            });
+
+
+            document.getElementById(
+                "atividade-nome"
+            ).focus();
+
+        }
+
+
+        /* =========================
+           FECHAR MODAL
+        ========================= */
+
+        function fecharModal() {
+
+            document.getElementById(
+                "modal-fundo"
+            ).style.display = "none";
+
+        }
+
+
+        function fecharModalFundo(event) {
+
+            if (
+                event.target.id ===
+                "modal-fundo"
+            ) {
+
+                fecharModal();
+
+            }
+
+        }
+
+
+        /* =========================
+           SALVAR ATIVIDADE
+        ========================= */
+
+        document.getElementById(
+            "form-atividade"
+        ).addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+
+                const formData =
+                    new FormData();
+
+
+                const csrfToken =
+                    document.querySelector(
+                        '[name=csrfmiddlewaretoken]'
+                    ).value;
+
+
+                formData.append(
+                    "disciplina",
+                    document.getElementById(
+                        "atividade-disciplina"
+                    ).value
+                );
+
+
+                formData.append(
+                    "bimestre",
+                    document.getElementById(
+                        "atividade-bimestre"
+                    ).value
+                );
+
+
+                formData.append(
+                    "nome",
+                    document.getElementById(
+                        "atividade-nome"
+                    ).value
+                );
+
+
+                formData.append(
+                    "valor",
+                    document.getElementById(
+                        "atividade-valor"
+                    ).value
+                );
+
+
+                formData.append(
+                    "csrfmiddlewaretoken",
+                    csrfToken
+                );
+
+
+                fetch(
+                    "{% url 'criar_atividade' %}",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                )
+
+                .then(response => {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "Erro HTTP: " +
+                            response.status
+                        );
+
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(data => {
+
+                    if (data.ok) {
+
+                        fecharModal();
+
+                        window.location.reload();
+
+                    }
+
+                    else {
+
+                        alert(
+                            data.erro ||
+                            "Não foi possível salvar a atividade."
+                        );
+
+                    }
+
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+
+                    alert(
+                        "Erro ao salvar a atividade."
+                    );
+
+                });
+
+            }
+        );
+
+    </script>
+
+
+    <script src="{% static 'PaginaHome/menu.js' %}"></script>
+
+</body>
+
+</html>

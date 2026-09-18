@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Estatísticas</title>
+
+    <link rel="stylesheet" href="{% static 'PaginaHome/PaginaHome.css' %}">
+
+</head>
+
+<body>
+
+    <div class="conteudo-da-pagina">
+
+        <h1>Estatísticas</h1>
+
+    </div>
+
+
+    <script>
+
+        const nomeUsuario = "{{ user.username }}";
+
+        const cursoUsuario = "{% if user.curso %}{{ user.curso.nome }}{% else %}Não informado{% endif %}";
+
+
+        const urlHome = "{% url 'home' %}";
+
+        const urlPerfil = "{% url 'perfil' %}";
+
+        const urlTarefas = "{% url 'tarefas' %}";
+
+        const urlDuvidas = "{% url 'duvidas' %}";
+
+        const urlEstatisticas = "{% url 'estatisticas' %}";
+
+        const urlManual = "{% url 'manual' %}"
+
+    </script>
+
+
+    <script src="{% static 'PaginaHome/menu.js' %}"></script>
+
+</body>
+
+</html>
