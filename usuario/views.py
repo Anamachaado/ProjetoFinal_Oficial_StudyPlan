@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login as auth_login
@@ -5,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Aluno
 from sistema.models import Curso, Serie, Disciplina
+from sistema.preditivo import SistemaPreditivo
 
 
 def cadastro(request):
@@ -100,6 +102,9 @@ def login(request):
 
         if usuario is not None and usuario.is_active:
             auth_login(request, usuario)
+            next_url = request.GET.get('next') or request.POST.get('next')
+            if next_url:
+                return redirect(next_url)
             return redirect('home')
 
         return render(request, 'LoginPerfil.html', {
@@ -236,7 +241,70 @@ def duvidas(request):
 
 @login_required
 def estatisticas(request):
-    return render(request, 'PaginaEstatistica.html')
+    aluno_alvo = request.user
+    todos_alunos = None
+
+    # Se for coordenador/admin (staff ou superuser), pode visualizar qualquer aluno
+    if request.user.is_staff or request.user.is_superuser:
+        todos_alunos = Aluno.objects.all().order_by('username')
+        aluno_id_param = request.GET.get('aluno_id')
+        if aluno_id_param:
+            aluno_selecionado = Aluno.objects.filter(id=aluno_id_param).first()
+            if aluno_selecionado:
+                aluno_alvo = aluno_selecionado
+
+    # Buscar turma/série do aluno
+    turma_nome = "2ª Série"
+    if aluno_alvo.curso:
+        serie = Serie.objects.filter(curso=aluno_alvo.curso).first()
+        if serie:
+            turma_nome = serie.get_ano_display()
+
+    # Processamento Preditivo com Pandas
+    disciplinas_data = SistemaPreditivo.obter_estatisticas_completas_aluno(aluno_alvo)
+    painel_admin = SistemaPreditivo.obter_painel_admin() if (request.user.is_staff or request.user.is_superuser) else None
+
+    # Encontrar a disciplina inicial (priorizar Matemática ou a primeira da lista)
+    disciplina_inicial = None
+    for d in disciplinas_data:
+        if 'matem' in d['disciplina_nome'].lower():
+            disciplina_inicial = d
+            break
+    if not disciplina_inicial and disciplinas_data:
+        disciplina_inicial = disciplinas_data[0]
+
+    contexto = {
+        'aluno_analisado': aluno_alvo,
+        'turma_nome': turma_nome,
+        'disciplinas_data': disciplinas_data,
+        'disciplinas_json': json.dumps(disciplinas_data),
+        'disciplina_selecionada': disciplina_inicial,
+        'todos_alunos': todos_alunos,
+        'painel_admin': painel_admin,
+        'is_admin': request.user.is_staff or request.user.is_superuser,
+    }
+    return render(request, 'PaginaEstatistica.html', contexto)
+
+
+@login_required
+def api_dados_estatisticas(request):
+    """
+    API JSON que retorna os dados analíticos e preditivos calculados com Pandas
+    para que o JavaScript construa os gráficos dinamicamente.
+    """
+    aluno_alvo = request.user
+    if (request.user.is_staff or request.user.is_superuser) and request.GET.get('aluno_id'):
+        aluno_alvo = Aluno.objects.filter(id=request.GET.get('aluno_id')).first() or request.user
+
+    disciplina_id = request.GET.get('disciplina_id')
+    disciplinas_data = SistemaPreditivo.obter_estatisticas_completas_aluno(aluno_alvo)
+
+    if disciplina_id:
+        for d in disciplinas_data:
+            if str(d['disciplina_id']) == str(disciplina_id):
+                return JsonResponse(d)
+
+    return JsonResponse({'disciplinas': disciplinas_data})
 
 
 @login_required
