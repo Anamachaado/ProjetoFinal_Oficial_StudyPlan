@@ -2,304 +2,574 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
+:root {
+    --bg-dark: rgba(255, 140, 0, 0.856);
+    --blue-primary: #223488;
+    --blue-secondary: #314595;
+    --orange-accent: #f8c383;
+    --bg-card: #ffffff;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --border-light: #e2e8f0;
+}
+
+
+/* ========================= */
+/* CONTEÚDO DO PERFIL */
+/* ========================= */
+
+.conteudo-da-pagina {
+    background-color: var(--bg-dark);
+
+    padding-top: 100px;
+    padding-bottom: 40px;
+
     min-height: 100vh;
-    background: #f1f5f9;
-    color: #223488;
-}
 
-.menu-lateral {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 255px;
-    height: 100vh;
-    padding: 25px 15px;
-    background: linear-gradient(180deg, #223488 0%, #223488 100%);
-    color: #ffffff;
-}
-
-.logo {
     display: flex;
     flex-direction: column;
-    margin-left: 8px;
-    margin-bottom: 32px;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 1.35;
+
+    align-items: center;
+    justify-content: center;
+
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
-.navegacao {
+
+/* ========================= */
+/* CARTÃO */
+/* ========================= */
+
+.conteudo-da-pagina .app-card {
+    display: flex;
+
+    width: 100%;
+    max-width: 920px;
+    min-height: 540px;
+
+    background-color: var(--bg-card);
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+}
+
+
+/* ========================= */
+/* BANNER ORIGINAL */
+/* ========================= */
+
+.conteudo-da-pagina .card-banner {
+    width: 42%;
+
+    background: linear-gradient(
+        135deg,
+        var(--blue-primary) 0%,
+        var(--blue-secondary) 100%
+    );
+
+    padding: 35px 30px;
+
     display: flex;
     flex-direction: column;
-    gap: 5px;
-}
 
-.item-menu {
-    width: 100%;
-    height: 48px;
-    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 15px;
-    padding: 0 16px;
-    border-radius: 10px;
+
+    text-align: center;
+
     color: #ffffff;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
-    transition: all 0.2s ease;
 }
 
-.item-menu:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
 
-.item-menu.ativo {
-    background: #ffffff;
-    color: #1747c7;
-    font-weight: 600;
-}
-
-.area-perfil {
-    padding: 40px;
-}
-
-.cartao-perfil {
-    width: 100%;
-    max-width: 1400px;
-    min-height: 650px;
-    margin: 0 auto;
-    padding: 45px;
-    background: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0 15px 45px rgba(15, 23, 42, 0.10);
-}
-
-.cabecalho-perfil {
+.conteudo-da-pagina .brand {
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    margin-bottom: 45px;
-    text-align: center;
-}
 
-.cabecalho-perfil h1 {
-    margin-bottom: 10px;
-    color: #172033;
-    font-size: 36px;
-    font-weight: 700;
-    text-align: center;
-}
-
-.cabecalho-perfil p {
-    color: #64748b;
-    font-size: 19px;
-    text-align: center;
-}
-
-.botao-editar {
-    display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-    min-height: 52px;
-    padding: 14px 24px;
-    margin-left: 30px;
-    margin-top: 145px;
-    border: none;
-    border-radius: 12px;
-    background: #223488;
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(85, 58, 237, 0.25);
-    transition: all 0.2s ease;
-}
 
-.botao-editar:hover {
-    background: #2424b8;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(76, 58, 237, 0.35);
-}
-
-.botao-editar:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.conteudo-perfil {
-    width: 100%;
-}
-
-.lado-direito {
-    width: 100%;
-}
-
-.secao-informacao {
-    padding-bottom: 25px;
-    margin-bottom: 35px;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.secao-informacao:last-child {
-    padding-bottom: 0;
-    margin-bottom: 0;
-    border-bottom: none;
-}
-
-.secao-informacao h3 {
-    display: flex;
-    align-items: center;
     gap: 12px;
-    margin-bottom: 25px;
-    color: #252f3e;
-    font-size: 23px;
-    font-weight: 600;
-}
 
-.linha-campos {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
-}
-
-.campo {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.campo label {
-    color: #475569;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.caixa-informacao {
     width: 100%;
-    min-height: 58px;
+
+    justify-content: flex-start;
+}
+
+
+.conteudo-da-pagina .brand-icon {
+    background-color: rgba(255, 255, 255, 0.2);
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+
     display: flex;
+
+    justify-content: center;
     align-items: center;
-    padding: 15px 18px;
-    background: #f8fafc;
-    border: 1.5px solid #f1f5f9;
-    border-radius: 10px;
-    color: #334155;
-    font-size: 17px;
-    transition: all 0.2s ease;
+
+    color: #ffffff;
 }
 
-.caixa-informacao:hover {
-    border-color: #d8d8ee;
-    background: #fbfbfe;
+
+.conteudo-da-pagina .brand h2 {
+    font-size: 20px;
+    font-weight: 700;
+
+    color: #ffffff;
 }
 
-.caixa-informacao.editando {
-    padding: 0;
-    background: #ffffff;
-    border-color: #2161ed;
+
+.conteudo-da-pagina .avatar-upload-container {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    margin: 15px 0;
 }
 
-.caixa-informacao input {
+
+.conteudo-da-pagina .avatar-circle {
+    position: relative;
+
+    width: 110px;
+    height: 110px;
+
+    border-radius: 50%;
+
+    background-color: rgba(255, 255, 255, 0.25);
+
+    border: 3px solid #ffffff;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 15px;
+
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+
+.conteudo-da-pagina .avatar-placeholder-icon {
+    width: 55px;
+    height: 55px;
+
+    color: #ffffff;
+}
+
+
+.conteudo-da-pagina .upload-badge {
+    position: absolute;
+
+    bottom: 0;
+    right: 0;
+
+    background-color: var(--orange-accent);
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    color: #ffffff;
+
+    border: 2px solid #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        background-color 0.2s;
+}
+
+
+.conteudo-da-pagina .upload-badge:hover {
+    transform: scale(1.1);
+
+    background-color: #d8831e;
+}
+
+
+.conteudo-da-pagina .upload-badge svg {
+    width: 16px;
+    height: 16px;
+}
+
+
+.conteudo-da-pagina .avatar-upload-container h3 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+.conteudo-da-pagina .avatar-upload-container p {
+    font-size: 13px;
+
+    opacity: 0.9;
+
+    margin-top: 2px;
+}
+
+
+.conteudo-da-pagina .banner-content p {
+    font-size: 13px;
+
+    opacity: 0.88;
+
+    line-height: 1.5;
+}
+
+
+/* ========================= */
+/* CORPO DO PERFIL */
+/* ========================= */
+
+.conteudo-da-pagina .card-body {
     width: 100%;
-    height: 100%;
-    padding: 15px 18px;
+
+    padding: 40px 35px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+
+    justify-content: center;
+}
+
+
+/* ========================= */
+/* CABEÇALHO */
+/* ========================= */
+
+.conteudo-da-pagina .section-header {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 5px;
+
+    text-align: center;
+}
+
+
+/*
+    O PaginaHome.css possui um h2 global.
+    Esta regra específica impede que ele
+    diminua o título do perfil.
+*/
+
+.conteudo-da-pagina .section-header h2 {
+    color: var(--text-dark);
+
+    font-family: sans-serif;
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+
+/* ========================= */
+/* BOTÃO EDITAR */
+/* ========================= */
+
+.conteudo-da-pagina .btn-edit {
+    background-color: var(--blue-primary);
+
+    color: #ffffff;
+
     border: none;
-    outline: none;
-    background: transparent;
-    color: #334155;
-    font-size: 17px;
-    font-family: inherit;
+
+    padding: 10px 16px;
+
+    border-radius: 10px;
+
+    font-family: sans-serif;
+
+    font-weight: 600;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    transition: background-color 0.2s;
 }
 
-#campo-nome {
+
+.conteudo-da-pagina .btn-edit:hover {
+    background-color: var(--blue-secondary);
+}
+
+
+.conteudo-da-pagina .btn-edit svg {
+    width: 15px;
+    height: 15px;
+}
+
+
+/* ========================= */
+/* GRUPOS DE INFORMAÇÃO */
+/* ========================= */
+
+.conteudo-da-pagina .info-group {
+    background-color: #f8fafc;
+
+    padding: 14px 18px;
+
+    border-radius: 14px;
+
+    border: 1px solid var(--border-light);
+
+    text-align: left;
+}
+
+
+/* ========================= */
+/* TÍTULO DOS GRUPOS */
+/* ========================= */
+
+.conteudo-da-pagina .group-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: var(--blue-primary);
+
+    margin-bottom: 8px;
+}
+
+
+.conteudo-da-pagina .group-title svg {
+    width: 16px;
+    height: 16px;
+}
+
+
+.conteudo-da-pagina .group-title h4 {
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: var(--blue-primary);
+}
+
+
+/* ========================= */
+/* LINHA DOS CAMPOS */
+/* ========================= */
+
+.conteudo-da-pagina .info-row {
+    display: flex;
+
+    gap: 20px;
+
+    align-items: flex-end;
+}
+
+
+.conteudo-da-pagina .info-item {
+    flex: 1;
+}
+
+
+.conteudo-da-pagina .info-item.full-width {
     width: 100%;
 }
 
-@media (max-width: 1050px) {
 
-    .linha-campos {
-        grid-template-columns: 1fr;
-    }
+.conteudo-da-pagina .info-item label {
+    display: block;
 
+    font-size: 11px;
+
+    color: var(--text-muted);
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    margin-bottom: 6px;
 }
 
-@media (max-width: 800px) {
 
-    .menu-lateral {
-        width: 210px;
-    }
+/* ========================= */
+/* TEXTO DOS CAMPOS */
+/* ========================= */
 
-    .area-perfil {
-        padding: 20px;
-    }
+.conteudo-da-pagina .info-item p {
+    font-size: 14px;
 
-    .cartao-perfil {
-        padding: 30px;
-    }
+    color: var(--text-dark);
 
-    .cabecalho-perfil {
-        gap: 20px;
-    }
+    font-weight: 600;
 
+    margin-top: 2px;
 }
 
-@media (max-width: 650px) {
 
-    .menu-lateral {
-        position: relative;
-        width: 100%;
-        height: auto;
-        padding: 15px;
+/* ========================= */
+/* CAIXAS EDITÁVEIS */
+/* ========================= */
+
+.conteudo-da-pagina .caixa-informacao {
+    width: 100%;
+
+    min-height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 10px 12px;
+
+    background-color: #ffffff;
+
+    border: 1px solid var(--border-light);
+
+    border-radius: 8px;
+
+    color: var(--text-dark);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    text-align: left;
+}
+
+
+.conteudo-da-pagina .caixa-informacao input {
+    width: 100%;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: var(--text-dark);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+.conteudo-da-pagina .caixa-informacao.editando {
+    border-color: var(--blue-primary);
+
+    box-shadow:
+        0 0 0 2px rgba(34, 52, 136, 0.08);
+}
+
+
+/* ========================= */
+/* BOTÃO AO LADO DO CURSO */
+/* ========================= */
+
+.conteudo-da-pagina .info-row .btn-edit {
+    align-self: flex-end;
+
+    flex-shrink: 0;
+}
+
+
+/* ========================= */
+/* RESPONSIVIDADE */
+/* ========================= */
+
+@media (max-width: 700px) {
+
+    .conteudo-da-pagina {
+        padding-top: 90px;
+
+        padding-left: 15px;
+        padding-right: 15px;
+
+        padding-bottom: 30px;
     }
 
-    .logo {
-        margin-bottom: 15px;
-    }
 
-    .navegacao {
-        flex-direction: row;
-        overflow-x: auto;
-        padding-bottom: 5px;
-    }
-
-    .item-menu {
-        min-width: max-content;
-    }
-
-    .area-perfil {
-        padding: 15px;
-    }
-
-    .cartao-perfil {
+    .conteudo-da-pagina .app-card {
         min-height: auto;
-        padding: 25px;
-        border-radius: 18px;
     }
 
-    .cabecalho-perfil {
+
+    .conteudo-da-pagina .card-body {
+        padding: 30px 25px;
+    }
+
+
+    .conteudo-da-pagina .info-row {
         flex-direction: column;
+
+        gap: 15px;
     }
 
-    .cabecalho-perfil h1 {
-        font-size: 28px;
-    }
 
-    .cabecalho-perfil p {
-        font-size: 16px;
-    }
-
-    .botao-editar {
+    .conteudo-da-pagina .info-row .btn-edit {
         width: 100%;
+
+        align-self: stretch;
     }
 
-    .linha-campos {
-        grid-template-columns: 1fr;
+
+    .conteudo-da-pagina .section-header h2 {
+        font-size: 26px;
+    }
+}
+
+
+@media (max-width: 450px) {
+
+    .conteudo-da-pagina {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
+
+    .conteudo-da-pagina .card-body {
+        padding: 25px 18px;
+    }
+
+
+    .conteudo-da-pagina .section-header h2 {
+        font-size: 23px;
+    }
+
+
+    .conteudo-da-pagina .info-group {
+        padding: 15px;
+    }
 }

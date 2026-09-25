@@ -6,53 +6,65 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Meu Perfil</title>
+    <title>StudyPlan - Perfil do Usuário</title>
 
-<link rel="stylesheet" href="{% static 'EdicaoPerfil/EdicaoPerfil.css' %}">
-<link rel="stylesheet" href="{% static 'PaginaHome/PaginaHome.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'EdicaoPerfil/EdicaoPerfil.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'PaginaHome/PaginaHome.css' %}">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
 
 <body>
 
-<div class="conteudo-da-pagina">
+    <div class="conteudo-da-pagina">
 
-<section class="area-perfil">
+        <div class="app-card">
 
-    <div class="cartao-perfil">
+            <main class="card-body">
 
-        <div class="cabecalho-perfil">
+                <div class="section-header">
 
-            <div>
+                    <div>
 
-                <h1>Meu Perfil</h1>
+                        <h2>
+                            Perfil do Usuário
+                        </h2>
 
-                <p>
-                       Confira e atualize suas informações pessoais e acadêmicas
-                </p>
+                        <p>
+                            Confira e atualize suas informações pessoais e acadêmicas
+                        </p>
 
-            </div>
+                    </div>
+
+                </div>
 
 
-        </div>
+                <!-- INFORMAÇÕES PESSOAIS -->
 
-        <div class="conteudo-perfil">
+                <div class="info-group">
 
-            <div class="lado-direito">
+                    <div class="group-title">
 
-                <section class="secao-informacao">
+                        <i data-lucide="user"></i>
 
-                    <h3>
-                        Pessoais
-                    </h3>
+                        <h4>
+                            Informações Pessoais
+                        </h4>
 
-                    <div class="linha-campos">
+                    </div>
 
-                        <div class="campo">
+
+                    <div class="info-row">
+
+                        <div class="info-item">
 
                             <label>
                                 Apelido
@@ -82,7 +94,7 @@
                         </div>
 
 
-                        <div class="campo">
+                        <div class="info-item">
 
                             <label>
                                 E-mail cadastrado
@@ -113,19 +125,27 @@
 
                     </div>
 
-                </section>
+                </div>
 
 
-                <section class="secao-informacao">
+                <!-- INFORMAÇÕES ACADÊMICAS -->
 
-                    <h3>
-                        Acadêmicos
-                    </h3>
+                <div class="info-group">
+
+                    <div class="group-title">
+
+                        <i data-lucide="graduation-cap"></i>
+
+                        <h4>
+                            Informações Acadêmicas
+                        </h4>
+
+                    </div>
 
 
-                    <div class="linha-campos">
+                    <div class="info-row">
 
-                        <div class="campo">
+                        <div class="info-item">
 
                             <label>
                                 Curso
@@ -147,234 +167,278 @@
 
                         </div>
 
+
                         <button
                             type="button"
-                            class="botao-editar"
+                            class="btn-edit"
                             id="botao-editar"
                             onclick="ativarEdicao()"
                         >
+
+                            <i data-lucide="edit-3"></i>
+
                             Editar Perfil
+
                         </button>
 
                     </div>
 
-                </section>
+                </div>
 
-            </div>
+            </main>
 
         </div>
 
     </div>
 
-</section>
 
-</div>
+    <script>
 
-<script>
+        const nomeUsuario =
+            "{{ user.username }}";
 
-    const nomeUsuario = "{{ user.username }}";
 
-    const cursoUsuario = "{% if user.curso %}{{ user.curso.nome }}{% else %}Não informado{% endif %}";
+        const cursoUsuario =
+            "{% if user.curso %}{{ user.curso.nome }}{% else %}Não informado{% endif %}";
 
-    const urlHome = "{% url 'home' %}";
 
-    const urlPerfil = "{% url 'perfil' %}";
+        const urlHome =
+            "{% url 'home' %}";
 
-    const urlTarefas = "{% url 'tarefas' %}";
 
-    const urlDuvidas = "{% url 'duvidas' %}";
+        const urlPerfil =
+            "{% url 'perfil' %}";
 
-    const urlEstatisticas = "{% url 'estatisticas' %}";
 
-    const urlManual = "{% url 'manual' %}";
+        const urlTarefas =
+            "{% url 'tarefas' %}";
 
-</script>
 
-<script>
+        const urlDuvidas =
+            "{% url 'duvidas' %}";
 
-    function ativarEdicao() {
 
-        const nomeExibido =
-            document.getElementById("nome-exibido");
+        const urlEstatisticas =
+            "{% url 'estatisticas' %}";
 
-        const nomeInput =
-            document.getElementById("nome-input");
 
-        const emailExibido =
-            document.getElementById("email-exibido");
+        const urlManual =
+            "{% url 'manual' %}";
 
-        const emailInput =
-            document.getElementById("email-input");
 
-        const campoNome =
-            document.getElementById("campo-nome");
+    </script>
 
-        const campoEmail =
-            document.getElementById("campo-email");
 
-        const botao =
-            document.getElementById("botao-editar");
+    <script>
 
+        function ativarEdicao() {
 
-        nomeExibido.style.display = "none";
+            const nomeExibido =
+                document.getElementById("nome-exibido");
 
-        nomeInput.style.display = "block";
 
-        campoNome.classList.add("editando");
+            const nomeInput =
+                document.getElementById("nome-input");
 
 
-        emailExibido.style.display = "none";
+            const emailExibido =
+                document.getElementById("email-exibido");
 
-        emailInput.style.display = "block";
 
-        campoEmail.classList.add("editando");
+            const emailInput =
+                document.getElementById("email-input");
 
 
-        botao.textContent = "Salvar Alterações";
+            const campoNome =
+                document.getElementById("campo-nome");
 
-        botao.onclick = salvarEdicao;
 
-    }
-
-
-    async function salvarEdicao() {
-
-        const nomeInput =
-            document.getElementById("nome-input");
-
-        const emailInput =
-            document.getElementById("email-input");
-
-
-        const dados = new FormData();
-
-        dados.append("nome", nomeInput.value);
-
-        dados.append("email", emailInput.value);
-
-
-        try {
-
-            const resposta =
-                await fetch(
-                    "{% url 'atualizar_perfil' %}",
-                    {
-                        method: "POST",
-
-                        body: dados,
-
-                        headers: {
-                            "X-CSRFToken": obterCsrfToken()
-                        }
-                    }
-                );
-
-
-            const resultado =
-                await resposta.json();
-
-
-            if (!resposta.ok) {
-
-                throw new Error(
-                    resultado.erro ||
-                    "Não foi possível salvar."
-                );
-
-            }
-
-
-            document.getElementById(
-                "nome-exibido"
-            ).textContent = resultado.nome;
-
-
-            document.getElementById(
-                "email-exibido"
-            ).textContent = resultado.email;
-
-
-            nomeInput.value =
-                resultado.nome;
-
-            emailInput.value =
-                resultado.email;
-
-
-            nomeInput.style.display = "none";
-
-            document.getElementById(
-                "nome-exibido"
-            ).style.display = "inline";
-
-
-            emailInput.style.display = "none";
-
-            document.getElementById(
-                "email-exibido"
-            ).style.display = "inline";
-
-
-            document.getElementById(
-                "campo-nome"
-            ).classList.remove("editando");
-
-
-            document.getElementById(
-                "campo-email"
-            ).classList.remove("editando");
+            const campoEmail =
+                document.getElementById("campo-email");
 
 
             const botao =
-                document.getElementById(
-                    "botao-editar"
-                );
+                document.getElementById("botao-editar");
 
 
-            botao.textContent =
-                "Editar Perfil";
+            nomeExibido.style.display =
+                "none";
+
+
+            nomeInput.style.display =
+                "block";
+
+
+            campoNome.classList.add(
+                "editando"
+            );
+
+
+            emailExibido.style.display =
+                "none";
+
+
+            emailInput.style.display =
+                "block";
+
+
+            campoEmail.classList.add(
+                "editando"
+            );
+
+
+            botao.innerHTML =
+                '<i data-lucide="save"></i> Salvar Alterações';
+
+
+            lucide.createIcons();
 
 
             botao.onclick =
-                ativarEdicao;
+                salvarEdicao;
 
         }
 
-        catch (erro) {
 
-            console.error(erro);
+        async function salvarEdicao() {
 
-            alert(
-                erro.message ||
-                "Não foi possível salvar as alterações."
+            const nomeInput =
+                document.getElementById("nome-input");
+
+
+            const emailInput =
+                document.getElementById("email-input");
+
+
+            const dados =
+                new FormData();
+
+
+            dados.append(
+                "nome",
+                nomeInput.value
             );
 
-        }
 
-    }
-
-
-    function obterCsrfToken() {
-
-        const nome =
-            "csrftoken=";
-
-        const partes =
-            document.cookie.split(";");
+            dados.append(
+                "email",
+                emailInput.value
+            );
 
 
-        for (let parte of partes) {
+            try {
 
-            parte =
-                parte.trim();
+                const resposta =
+                    await fetch(
+                        "{% url 'atualizar_perfil' %}",
+                        {
+                            method: "POST",
+
+                            body: dados,
+
+                            headers: {
+                                "X-CSRFToken":
+                                    obterCsrfToken()
+                            }
+                        }
+                    );
 
 
-            if (
-                parte.startsWith(nome)
-            ) {
+                const resultado =
+                    await resposta.json();
 
-                return parte.substring(
-                    nome.length
+
+                if (!resposta.ok) {
+
+                    throw new Error(
+                        resultado.erro ||
+                        "Não foi possível salvar."
+                    );
+
+                }
+
+
+                document.getElementById(
+                    "nome-exibido"
+                ).textContent =
+                    resultado.nome;
+
+
+                document.getElementById(
+                    "email-exibido"
+                ).textContent =
+                    resultado.email;
+
+
+                nomeInput.value =
+                    resultado.nome;
+
+
+                emailInput.value =
+                    resultado.email;
+
+
+                nomeInput.style.display =
+                    "none";
+
+
+                document.getElementById(
+                    "nome-exibido"
+                ).style.display =
+                    "inline";
+
+
+                emailInput.style.display =
+                    "none";
+
+
+                document.getElementById(
+                    "email-exibido"
+                ).style.display =
+                    "inline";
+
+
+                document.getElementById(
+                    "campo-nome"
+                ).classList.remove(
+                    "editando"
+                );
+
+
+                document.getElementById(
+                    "campo-email"
+                ).classList.remove(
+                    "editando"
+                );
+
+
+                const botao =
+                    document.getElementById(
+                        "botao-editar"
+                    );
+
+
+                botao.innerHTML =
+                    '<i data-lucide="edit-3"></i> Editar Perfil';
+
+
+                lucide.createIcons();
+
+
+                botao.onclick =
+                    ativarEdicao;
+
+            }
+
+
+            catch (erro) {
+
+                console.error(erro);
+
+
+                alert(
+                    erro.message ||
+                    "Não foi possível salvar as alterações."
                 );
 
             }
@@ -382,13 +446,52 @@
         }
 
 
-        return "";
+        function obterCsrfToken() {
 
-    }
+            const nome =
+                "csrftoken=";
 
-</script>
 
-<script src="{% static 'PaginaHome/menu.js' %}"></script>
+            const partes =
+                document.cookie.split(";");
+
+
+            for (
+                let parte of partes
+            ) {
+
+                parte =
+                    parte.trim();
+
+
+                if (
+                    parte.startsWith(nome)
+                ) {
+
+                    return parte.substring(
+                        nome.length
+                    );
+
+                }
+
+            }
+
+
+            return "";
+
+        }
+
+    </script>
+
+
+    <script src="{% static 'PaginaHome/menu.js' %}"></script>
+
+
+    <script>
+
+        lucide.createIcons();
+
+    </script>
 
 </body>
 

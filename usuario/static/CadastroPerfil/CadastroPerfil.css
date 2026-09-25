@@ -5,7 +5,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
- body {
+body {
     min-height: 100vh;
     background: linear-gradient(#ffa825e3, #ff7f24e0, #fc660fd3);
     display: flex;
@@ -14,8 +14,6 @@
     padding: 40px;
     color: #1e293b;
 }
-
-
 
 .cartao-principal {
     background: #ffffff;
@@ -58,7 +56,7 @@
 }
 
 .titulo-secao {
-    color:  rgb(220, 155, 49);
+    color: rgb(220, 155, 49);
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 16px;
@@ -132,16 +130,32 @@
     color: #cbd5e1;
 }
 
-.opcoes-curso,
-.opcoes-serie {
+
+/* CURSO */
+
+.opcoes-curso {
     display: flex;
     flex-direction: column;
+    gap: 12px;
+}
+
+
+/* SÉRIE */
+
+.opcoes-serie {
+    display: flex;
+    flex-direction: row;
     gap: 12px;
 }
 
 .opcao {
     width: 100%;
     cursor: pointer;
+}
+
+.opcoes-serie .opcao {
+    flex: 1;
+    width: auto;
 }
 
 .opcao input {
@@ -186,16 +200,22 @@
     color: #FF6F1A;
 }
 
+
+/* DISCIPLINAS */
+
 .lista-disciplinas {
     width: 100%;
     min-height: 80px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 12px;
 }
 
 .lista-disciplinas .course-balloon {
-    width: 100%;
+    width: auto;
+    flex: 1 1 calc(33.333% - 12px);
+    min-width: 170px;
 }
 
 .lista-disciplinas .course-balloon input {
@@ -220,7 +240,7 @@
 
 .lista-disciplinas .course-balloon:hover .balloon-content {
     border-color: #FF6F1A;
-    background: #141463;
+    background: #00000000;
 }
 
 .lista-disciplinas .course-balloon input:checked + .balloon-content {
@@ -230,6 +250,9 @@
     box-shadow: 0 0 0 2px rgba(89, 89, 189, 0.08);
 }
 
+
+/* DESCRIÇÃO */
+
 .descricao-secao {
     font-size: 14px;
     line-height: 1.5;
@@ -237,6 +260,9 @@
     margin-top: -7px;
     margin-bottom: 20px;
 }
+
+
+/* BOTÕES */
 
 .button-group {
     width: 100%;
@@ -287,6 +313,9 @@
     background: #fbfbfe;
 }
 
+
+/* RESPONSIVIDADE */
+
 @media (max-width: 850px) {
 
     body {
@@ -304,6 +333,7 @@
     }
 }
 
+
 @media (max-width: 550px) {
 
     body {
@@ -317,6 +347,23 @@
 
     .titulo {
         font-size: 30px;
+    }
+
+    .opcoes-serie {
+        flex-direction: column;
+    }
+
+    .opcoes-serie .opcao {
+        width: 100%;
+    }
+
+    .lista-disciplinas {
+        flex-direction: column;
+    }
+
+    .lista-disciplinas .course-balloon {
+        width: 100%;
+        flex: none;
     }
 
     .button-group {
