@@ -28,6 +28,14 @@ urlpatterns = [
 
     path('estatisticas/', views.estatisticas, name='estatisticas'),
 
+    path('painel-admin/', views.estatisticas, name='painel_admin'),
+
+    path(
+        'api/estatisticas/dados/',
+        views.api_dados_estatisticas,
+        name='api_dados_estatisticas'
+    ),
+
     path('manual/', views.manual, name='manual'),
 
     path(

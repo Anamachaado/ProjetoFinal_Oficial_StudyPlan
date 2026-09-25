@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-huf094ds2c(b81gfd)_0%e76&vjhu-$^0d_@e4c!26$l963$9q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -135,3 +135,6 @@ MAILERS = {
 }
 
 AUTH_USER_MODEL = 'usuario.Aluno'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'estatisticas'
