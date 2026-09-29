@@ -51,17 +51,6 @@
             text-align: left;
         }
 
-        .celula-bimestre {
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: 500;
-        }
-
-        .celula-bimestre:hover {
-            background: #eeeeee;
-            transform: scale(1.02);
-        }
-
         .total {
             font-weight: bold;
         }
@@ -78,126 +67,15 @@
             text-align: center;
         }
 
-        /* =========================
-           MODAL
-        ========================= */
-
-        .modal-fundo {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.45);
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal {
-            width: 90%;
-            max-width: 420px;
-            max-height: 90vh;
-            overflow-y: auto;
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal h2 {
-            margin-top: 0;
-        }
-
-        .modal p {
-            margin-bottom: 20px;
-        }
-
-        .modal input,
-        .modal select {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            margin-top: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-
-        .modal-botoes {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .modal-botoes button {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .btn-cancelar {
-            background: #eeeeee;
-        }
-
-        .btn-salvar {
-            background: #222;
-            color: white;
-        }
-
-        /* =========================
-           HISTÓRICO
-        ========================= */
-
-        .historico-atividades {
-            margin: 20px 0;
-            padding: 15px;
-            background: #f7f7f7;
-            border-radius: 10px;
-        }
-
-        .historico-atividades h3 {
-            margin-top: 0;
-            margin-bottom: 12px;
-            font-size: 16px;
-        }
-
-        .lista-atividades {
-            max-height: 160px;
-            overflow-y: auto;
-        }
-
-        .atividade-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .atividade-item:last-child {
-            border-bottom: none;
-        }
-
-        .atividade-nome {
-            font-weight: 500;
-            word-break: break-word;
-        }
-
-        .atividade-valor {
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .total-modal {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 2px solid #ddd;
-            text-align: right;
-        }
-
     </style>
+
+    <!-- CRUD de notas (clicar na nota) -->
+    <link rel="stylesheet" href="{% static 'PaginaHome/CrudNotas.css' %}">
+
+    <!-- Janela de sub-atividades (segurar a nota) -->
+    <link rel="stylesheet" href="{% static 'PaginaHome/JanelaSubAtividades.css' %}">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
 
@@ -208,6 +86,11 @@
         <h1>Suas Notas</h1>
 
         {% if tabela %}
+
+        <p class="dica-tabela">
+            <i data-lucide="hand"></i>
+            Toque numa nota para adicionar, editar ou excluir atividades. Segure para dividir em sub-atividades.
+        </p>
 
         <div class="tabela-container">
 
@@ -247,44 +130,44 @@
 
                         <td
                             class="celula-bimestre"
-                            onclick="abrirModal(
-                                '{{ disciplina.id }}',
-                                '{{ disciplina.nome|escapejs }}',
-                                '1'
-                            )"
+                            tabindex="0"
+                            data-disciplina="{{ disciplina.id }}"
+                            data-nome="{{ disciplina.nome }}"
+                            data-bimestre="1"
+                            title="Toque para ver as notas · segure para sub-atividades"
                         >
                             {{ disciplina.bim1 }}
                         </td>
 
                         <td
                             class="celula-bimestre"
-                            onclick="abrirModal(
-                                '{{ disciplina.id }}',
-                                '{{ disciplina.nome|escapejs }}',
-                                '2'
-                            )"
+                            tabindex="0"
+                            data-disciplina="{{ disciplina.id }}"
+                            data-nome="{{ disciplina.nome }}"
+                            data-bimestre="2"
+                            title="Toque para ver as notas · segure para sub-atividades"
                         >
                             {{ disciplina.bim2 }}
                         </td>
 
                         <td
                             class="celula-bimestre"
-                            onclick="abrirModal(
-                                '{{ disciplina.id }}',
-                                '{{ disciplina.nome|escapejs }}',
-                                '3'
-                            )"
+                            tabindex="0"
+                            data-disciplina="{{ disciplina.id }}"
+                            data-nome="{{ disciplina.nome }}"
+                            data-bimestre="3"
+                            title="Toque para ver as notas · segure para sub-atividades"
                         >
                             {{ disciplina.bim3 }}
                         </td>
 
                         <td
                             class="celula-bimestre"
-                            onclick="abrirModal(
-                                '{{ disciplina.id }}',
-                                '{{ disciplina.nome|escapejs }}',
-                                '4'
-                            )"
+                            tabindex="0"
+                            data-disciplina="{{ disciplina.id }}"
+                            data-nome="{{ disciplina.nome }}"
+                            data-bimestre="4"
+                            title="Toque para ver as notas · segure para sub-atividades"
                         >
                             {{ disciplina.bim4 }}
                         </td>
@@ -323,133 +206,354 @@
 
 
     <!-- =========================
-         MODAL
+         JANELA DE NOTAS (CRUD)
+         abre ao CLICAR na nota
     ========================= -->
 
-    <div
-        id="modal-fundo"
-        class="modal-fundo"
-        onclick="fecharModalFundo(event)"
-    >
+    <div id="janela-notas-fundo" class="janela-notas-fundo">
 
         <div
-            class="modal"
-            onclick="event.stopPropagation()"
+            class="janela-notas"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="janela-notas-titulo"
         >
 
-            <h2>
-                Adicionar atividade
-            </h2>
+            <div class="janela-notas-topo">
 
+                <div class="janela-notas-icone">
+                    <i data-lucide="notebook-pen"></i>
+                </div>
 
-            <p id="modal-disciplina"></p>
+                <div>
 
+                    <h2 id="janela-notas-titulo" class="janela-notas-titulo">
+                        Notas do bimestre
+                    </h2>
 
-            <!-- =========================
-                 HISTÓRICO
-            ========================= -->
+                    <p id="janela-notas-subtitulo" class="janela-notas-subtitulo"></p>
 
-            <div class="historico-atividades">
+                </div>
 
-                <h3>
-                    Trabalhos cadastrados
-                </h3>
-
-                <div
-                    id="lista-atividades"
-                    class="lista-atividades"
+                <button
+                    type="button"
+                    class="botao-fechar-janela"
+                    aria-label="Fechar"
+                    onclick="fecharJanelaNotas()"
                 >
-
-                    <p>
-                        Nenhum trabalho cadastrado.
-                    </p>
-
-                </div>
-
-
-                <div class="total-modal">
-
-                    Total do bimestre:
-
-                    <strong id="total-bimestre">
-                        0
-                    </strong>
-
-                </div>
+                    <i data-lucide="x"></i>
+                </button>
 
             </div>
 
 
-            <!-- =========================
-                 FORMULÁRIO
-            ========================= -->
+            <div class="janela-notas-corpo">
 
-            <form id="form-atividade">
+                <!-- RESUMO DO BIMESTRE -->
 
-                {% csrf_token %}
+                <div class="resumo-bimestre">
 
+                    <div class="resumo-linha">
 
-                <input
-                    type="hidden"
-                    id="atividade-disciplina"
-                >
+                        <div class="resumo-numeros">
 
+                            <span id="resumo-total" class="resumo-total">0</span>
 
-                <input
-                    type="hidden"
-                    id="atividade-bimestre"
-                >
+                            <span id="resumo-maximo" class="resumo-maximo"></span>
 
+                        </div>
 
-                <label>
-                    Nome da atividade
-                </label>
+                        <span id="resumo-situacao" class="resumo-situacao vazio"></span>
 
+                    </div>
 
-                <input
-                    type="text"
-                    id="atividade-nome"
-                    placeholder="Ex.: Prova de Matemática"
-                    required
-                >
+                    <div class="resumo-barra">
 
+                        <div id="resumo-barra-preenchida" class="resumo-barra-preenchida"></div>
 
-                <label>
-                    Valor
-                </label>
+                        <span class="resumo-marca-media" title="Média (60%)"></span>
 
+                    </div>
 
-                <input
-                    type="number"
-                    id="atividade-valor"
-                    placeholder="Ex.: 10"
-                    min="0"
-                    step="0.01"
-                    required
-                >
-
-
-                <div class="modal-botoes">
-
-                    <button
-                        type="button"
-                        class="btn-cancelar"
-                        onclick="fecharModal()"
-                    >
-                        Cancelar
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        class="btn-salvar"
-                    >
-                        Salvar
-                    </button>
+                    <p id="resumo-legenda" class="resumo-legenda"></p>
 
                 </div>
 
-            </form>
+
+                <!-- LISTA DE ATIVIDADES -->
+
+                <div>
+
+                    <h3 class="lista-titulo">
+                        Atividades lançadas
+                    </h3>
+
+                    <div id="lista-atividades" class="lista-atividades"></div>
+
+                </div>
+
+
+                <!-- FORMULÁRIO: ADICIONAR / EDITAR -->
+
+                <form id="form-notas" class="form-notas" novalidate>
+
+                    {% csrf_token %}
+
+                    <h3 id="form-notas-titulo" class="form-notas-titulo">
+                        Nova atividade
+                    </h3>
+
+                    <div class="form-notas-campos">
+
+                        <div>
+
+                            <label for="nota-nome">
+                                Nome da atividade
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nota-nome"
+                                maxlength="100"
+                                placeholder="Ex.: Prova 1"
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                        <div>
+
+                            <label for="nota-valor">
+                                Nota (pts)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="nota-valor"
+                                min="0"
+                                step="0.01"
+                                inputmode="decimal"
+                                placeholder="Ex.: 8"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <p id="form-notas-aviso" class="form-notas-aviso" role="alert"></p>
+
+                    <div class="form-notas-botoes">
+
+                        <button
+                            type="button"
+                            id="botao-cancelar-edicao"
+                            class="botao-secundario"
+                            onclick="cancelarEdicao()"
+                            hidden
+                        >
+                            Cancelar edição
+                        </button>
+
+                        <button
+                            type="submit"
+                            id="botao-salvar-nota"
+                            class="botao-principal"
+                        >
+                            Adicionar
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <!-- ATALHO PARA AS SUB-ATIVIDADES -->
+
+                <button
+                    type="button"
+                    class="atalho-sub"
+                    onclick="irParaSubAtividades()"
+                >
+                    <i data-lucide="layers"></i>
+
+                    <span>
+                        Quer dividir a nota em partes? Segure a nota na tabela ou toque aqui.
+                    </span>
+
+                    <i data-lucide="chevron-right"></i>
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         JANELA DE SUB-ATIVIDADES
+         abre ao SEGURAR a nota
+    ========================= -->
+
+    <div id="janela-sub-fundo" class="janela-sub-fundo">
+
+        <div
+            class="janela-sub"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="janela-sub-titulo"
+        >
+
+            <div class="janela-sub-topo">
+
+                <div class="janela-sub-icone">
+                    <i data-lucide="layers"></i>
+                </div>
+
+                <div>
+
+                    <h2 id="janela-sub-titulo" class="janela-sub-titulo">
+                        Sub-atividades
+                    </h2>
+
+                    <p id="janela-sub-subtitulo" class="janela-sub-subtitulo"></p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="botao-fechar-sub"
+                    aria-label="Fechar"
+                    onclick="fecharJanelaSubAtividades()"
+                >
+                    <i data-lucide="x"></i>
+                </button>
+
+            </div>
+
+
+            <div class="janela-sub-corpo">
+
+                <!-- RESUMO -->
+
+                <div class="sub-resumo">
+
+                    <div class="sub-resumo-item">
+
+                        <span class="sub-resumo-rotulo">Dividido</span>
+
+                        <span id="sub-distribuido" class="sub-resumo-numero">0</span>
+
+                        <div class="sub-distribuido-barra">
+                            <div id="sub-distribuido-preenchido" class="sub-distribuido-preenchido"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="sub-resumo-item">
+
+                        <span class="sub-resumo-rotulo">Nota tirada</span>
+
+                        <span id="sub-obtido" class="sub-resumo-numero">0</span>
+
+                    </div>
+
+                    <div class="sub-resumo-item">
+
+                        <span class="sub-resumo-rotulo">Aproveit.</span>
+
+                        <span id="sub-aproveitamento" class="sub-resumo-numero">–</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LISTA -->
+
+                <div>
+
+                    <h3 class="sub-lista-titulo">
+                        Partes da nota
+                    </h3>
+
+                    <div id="sub-lista" class="sub-lista"></div>
+
+                </div>
+
+
+                <!-- FORMULÁRIO -->
+
+                <form id="form-sub" class="form-sub" novalidate>
+
+                    <h3 class="form-sub-titulo">
+                        Nova sub-atividade
+                    </h3>
+
+                    <div class="form-sub-campos">
+
+                        <div class="form-sub-campo-nome">
+
+                            <label for="sub-nome">
+                                Nome da atividade
+                            </label>
+
+                            <input
+                                type="text"
+                                id="sub-nome"
+                                maxlength="100"
+                                placeholder="Ex.: Lista de exercícios"
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                        <div>
+
+                            <label for="sub-valor">
+                                Vale (pts)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="sub-valor"
+                                min="0"
+                                step="0.01"
+                                inputmode="decimal"
+                                placeholder="10"
+                            >
+
+                        </div>
+
+                        <div>
+
+                            <label for="sub-nota">
+                                Tirei (pts)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="sub-nota"
+                                min="0"
+                                step="0.01"
+                                inputmode="decimal"
+                                placeholder="8"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <p id="form-sub-aviso" class="form-sub-aviso" role="alert"></p>
+
+                    <button type="submit" class="botao-adicionar-sub">
+                        <i data-lucide="plus"></i>
+                        Adicionar sub-atividade
+                    </button>
+
+                </form>
+
+            </div>
 
         </div>
 
@@ -490,361 +594,31 @@
             "{% url 'manual' %}";
 
 
-        /* =========================
-           ABRIR MODAL
-        ========================= */
+        /* URLs usadas pelo CrudNotas.js */
 
-        function abrirModal(
-            disciplinaId,
-            disciplinaNome,
-            bimestre
-        ) {
+        const urlListarAtividades =
+            "{% url 'listar_atividades' %}";
 
-            document.getElementById(
-                "atividade-disciplina"
-            ).value = disciplinaId;
 
+        const urlCriarAtividade =
+            "{% url 'criar_atividade' %}";
 
-            document.getElementById(
-                "atividade-bimestre"
-            ).value = bimestre;
 
+        const urlEditarAtividade =
+            "{% url 'editar_atividade' %}";
 
-            document.getElementById(
-                "modal-disciplina"
-            ).textContent =
-                disciplinaNome +
-                " — " +
-                bimestre +
-                "º Bimestre";
 
-
-            document.getElementById(
-                "atividade-nome"
-            ).value = "";
-
-
-            document.getElementById(
-                "atividade-valor"
-            ).value = "";
-
-
-            const lista =
-                document.getElementById(
-                    "lista-atividades"
-                );
-
-
-            const total =
-                document.getElementById(
-                    "total-bimestre"
-                );
-
-
-            lista.innerHTML =
-                "<p>Carregando histórico...</p>";
-
-
-            total.textContent = "0";
-
-
-            document.getElementById(
-                "modal-fundo"
-            ).style.display = "flex";
-
-
-            /* =========================
-               BUSCA HISTÓRICO
-            ========================= */
-
-            fetch(
-                "{% url 'listar_atividades' %}" +
-                "?disciplina=" +
-                encodeURIComponent(disciplinaId) +
-                "&bimestre=" +
-                encodeURIComponent(bimestre)
-            )
-
-            .then(response => {
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        "Erro HTTP: " +
-                        response.status
-                    );
-
-                }
-
-                return response.json();
-
-            })
-
-            .then(data => {
-
-                lista.innerHTML = "";
-
-
-                if (
-                    !data.atividades ||
-                    data.atividades.length === 0
-                ) {
-
-                    const vazio =
-                        document.createElement("p");
-
-
-                    vazio.textContent =
-                        "Nenhum trabalho cadastrado.";
-
-
-                    lista.appendChild(vazio);
-
-                }
-
-                else {
-
-                    data.atividades.forEach(
-                        atividade => {
-
-                            const item =
-                                document.createElement(
-                                    "div"
-                                );
-
-
-                            item.className =
-                                "atividade-item";
-
-
-                            const nome =
-                                document.createElement(
-                                    "span"
-                                );
-
-
-                            nome.className =
-                                "atividade-nome";
-
-
-                            nome.textContent =
-                                atividade.nome;
-
-
-                            const valor =
-                                document.createElement(
-                                    "span"
-                                );
-
-
-                            valor.className =
-                                "atividade-valor";
-
-
-                            valor.textContent =
-                                Number(
-                                    atividade.valor
-                                ).toLocaleString(
-                                    "pt-BR",
-                                    {
-                                        maximumFractionDigits: 2
-                                    }
-                                ) +
-                                " pts";
-
-
-                            item.appendChild(nome);
-
-                            item.appendChild(valor);
-
-                            lista.appendChild(item);
-
-                        }
-                    );
-
-                }
-
-
-                total.textContent =
-                    Number(
-                        data.total_bimestre || 0
-                    ).toLocaleString(
-                        "pt-BR",
-                        {
-                            maximumFractionDigits: 2
-                        }
-                    );
-
-            })
-
-            .catch(error => {
-
-                console.error(error);
-
-
-                lista.innerHTML =
-                    "<p>Não foi possível carregar o histórico.</p>";
-
-            });
-
-
-            document.getElementById(
-                "atividade-nome"
-            ).focus();
-
-        }
-
-
-        /* =========================
-           FECHAR MODAL
-        ========================= */
-
-        function fecharModal() {
-
-            document.getElementById(
-                "modal-fundo"
-            ).style.display = "none";
-
-        }
-
-
-        function fecharModalFundo(event) {
-
-            if (
-                event.target.id ===
-                "modal-fundo"
-            ) {
-
-                fecharModal();
-
-            }
-
-        }
-
-
-        /* =========================
-           SALVAR ATIVIDADE
-        ========================= */
-
-        document.getElementById(
-            "form-atividade"
-        ).addEventListener(
-            "submit",
-            function(event) {
-
-                event.preventDefault();
-
-
-                const formData =
-                    new FormData();
-
-
-                const csrfToken =
-                    document.querySelector(
-                        '[name=csrfmiddlewaretoken]'
-                    ).value;
-
-
-                formData.append(
-                    "disciplina",
-                    document.getElementById(
-                        "atividade-disciplina"
-                    ).value
-                );
-
-
-                formData.append(
-                    "bimestre",
-                    document.getElementById(
-                        "atividade-bimestre"
-                    ).value
-                );
-
-
-                formData.append(
-                    "nome",
-                    document.getElementById(
-                        "atividade-nome"
-                    ).value
-                );
-
-
-                formData.append(
-                    "valor",
-                    document.getElementById(
-                        "atividade-valor"
-                    ).value
-                );
-
-
-                formData.append(
-                    "csrfmiddlewaretoken",
-                    csrfToken
-                );
-
-
-                fetch(
-                    "{% url 'criar_atividade' %}",
-                    {
-                        method: "POST",
-                        body: formData
-                    }
-                )
-
-                .then(response => {
-
-                    if (!response.ok) {
-
-                        throw new Error(
-                            "Erro HTTP: " +
-                            response.status
-                        );
-
-                    }
-
-                    return response.json();
-
-                })
-
-                .then(data => {
-
-                    if (data.ok) {
-
-                        fecharModal();
-
-                        window.location.reload();
-
-                    }
-
-                    else {
-
-                        alert(
-                            data.erro ||
-                            "Não foi possível salvar a atividade."
-                        );
-
-                    }
-
-                })
-
-                .catch(error => {
-
-                    console.error(error);
-
-
-                    alert(
-                        "Erro ao salvar a atividade."
-                    );
-
-                });
-
-            }
-        );
+        const urlExcluirAtividade =
+            "{% url 'excluir_atividade' %}";
 
     </script>
 
 
     <script src="{% static 'PaginaHome/menu.js' %}"></script>
+
+    <script src="{% static 'PaginaHome/CrudNotas.js' %}"></script>
+
+    <script src="{% static 'PaginaHome/JanelaSubAtividades.js' %}"></script>
 
 </body>
 

@@ -369,3 +369,120 @@ def listar_atividades(request):
             total=Sum('valor')
         )['total'] or 0
     })
+
+
+def resposta_do_bimestre(aluno, disciplina, bimestre):
+    from django.db.models import Sum
+    from sistema.models import Atividade
+
+    atividades = Atividade.objects.filter(
+        aluno=aluno,
+        disciplina=disciplina,
+        bimestre=bimestre
+    ).order_by('id')
+
+    return JsonResponse({
+        'ok': True,
+        'atividades': [
+            {
+                'id': a.id,
+                'nome': a.nome,
+                'valor': a.valor
+            }
+            for a in atividades
+        ],
+        'total_bimestre': atividades.aggregate(
+            total=Sum('valor')
+        )['total'] or 0
+    })
+
+
+@login_required
+def editar_atividade(request):
+    from sistema.models import Atividade
+
+    if request.method != 'POST':
+        return JsonResponse(
+            {'erro': 'Método inválido.'},
+            status=405
+        )
+
+    atividade_id = request.POST.get('atividade')
+    nome = request.POST.get('nome', '').strip()
+    valor = request.POST.get('valor')
+
+    if not atividade_id or not nome or not valor:
+        return JsonResponse(
+            {'erro': 'Preencha todos os campos.'},
+            status=400
+        )
+
+    try:
+        valor = float(valor)
+    except ValueError:
+        return JsonResponse(
+            {'erro': 'O valor precisa ser um número.'},
+            status=400
+        )
+
+    if valor < 0:
+        return JsonResponse(
+            {'erro': 'O valor não pode ser negativo.'},
+            status=400
+        )
+
+    try:
+        atividade = Atividade.objects.get(
+            id=atividade_id,
+            aluno=request.user
+        )
+    except (Atividade.DoesNotExist, ValueError):
+        return JsonResponse(
+            {'erro': 'Atividade não encontrada.'},
+            status=404
+        )
+
+    atividade.nome = nome
+    atividade.valor = valor
+    atividade.save()
+
+    return resposta_do_bimestre(
+        request.user,
+        atividade.disciplina,
+        atividade.bimestre
+    )
+
+
+@login_required
+def excluir_atividade(request):
+    from sistema.models import Atividade
+
+    if request.method != 'POST':
+        return JsonResponse(
+            {'erro': 'Método inválido.'},
+            status=405
+        )
+
+    atividade_id = request.POST.get('atividade')
+
+    try:
+        atividade = Atividade.objects.get(
+            id=atividade_id,
+            aluno=request.user
+        )
+    except (Atividade.DoesNotExist, ValueError):
+        return JsonResponse(
+            {'erro': 'Atividade não encontrada.'},
+            status=404
+        )
+
+    disciplina = atividade.disciplina
+    bimestre = atividade.bimestre
+
+    atividade.delete()
+
+    return resposta_do_bimestre(
+        request.user,
+        disciplina,
+        bimestre
+    )

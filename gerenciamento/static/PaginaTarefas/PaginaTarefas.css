@@ -1,0 +1,1129 @@
+/* =========================================================
+   PÁGINA DE TAREFAS (KANBAN)  -  Estilização / Front-end
+
+   Três colunas:  A fazer  ->  Fazendo  ->  Concluído
+
+   Cores padrão do StudyPlan:
+   azul     rgb(89, 89, 189)
+   laranja  rgb(245, 122, 28)   (mesmo tom da foto laranja)
+   cinza e branco
+   ========================================================= */
+
+:root {
+    --azul: rgb(89, 89, 189);
+    --azul-escuro: rgb(70, 70, 158);
+    --azul-claro: rgb(236, 236, 248);
+
+    --laranja: rgb(245, 122, 28);
+    --laranja-claro: rgb(254, 239, 226);
+    --laranja-texto: rgb(170, 78, 8);
+
+    --cinza: rgb(150, 150, 170);
+    --cinza-texto: rgb(38, 38, 52);
+    --cinza-suave: rgb(107, 107, 128);
+    --cinza-borda: rgb(226, 226, 236);
+    --cinza-fundo: rgb(244, 244, 249);
+
+    --branco: #ffffff;
+}
+
+
+/* =========================
+   FUNDO DA PÁGINA
+========================= */
+
+.conteudo-da-pagina.pagina-tarefas {
+    justify-content: flex-start;
+
+    align-items: center;
+
+    padding: 100px 20px 40px;
+
+    text-align: left;
+
+    /* A mesma foto laranja do login */
+    background: rgb(245, 122, 28) url("../LoginPerfil/fundo-laranja.webp") center / cover no-repeat;
+}
+
+/*
+    O PaginaHome.css pinta TODOS os elementos de laranja
+    (regra "*"). Dentro do quadro voltamos ao transparente
+    e cada parte recebe a sua cor logo abaixo.
+*/
+
+.pagina-tarefas *,
+.modal-tarefa-fundo * {
+    background-color: transparent;
+}
+
+
+/* =========================
+   CARTÃO BRANCO DO QUADRO
+========================= */
+
+.pagina-tarefas .quadro {
+    width: 100%;
+    max-width: 1180px;
+
+    padding: 28px;
+
+    background-color: var(--branco);
+
+    color: var(--cinza-texto);
+
+    border-radius: 24px;
+
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================
+   TOPO: TÍTULO + BOTÃO
+========================= */
+
+.quadro-topo {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 16px;
+
+    flex-wrap: wrap;
+}
+
+.quadro-titulo-grupo {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+.pagina-tarefas .quadro-icone {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background-color: var(--azul);
+
+    color: var(--branco);
+}
+
+.quadro-icone svg {
+    width: 24px;
+    height: 24px;
+}
+
+.pagina-tarefas .quadro-titulo {
+    font-size: 26px;
+
+    font-weight: 800;
+
+    color: var(--cinza-texto);
+}
+
+.quadro-subtitulo {
+    margin-top: 2px;
+
+    font-size: 15px;
+
+    color: var(--cinza-suave);
+}
+
+.pagina-tarefas .botao-nova-tarefa {
+    height: 46px;
+
+    padding: 0 20px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background-color: var(--azul);
+
+    color: var(--branco);
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+    box-shadow: 0 6px 16px rgba(89, 89, 189, 0.3);
+
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.pagina-tarefas .botao-nova-tarefa:hover {
+    background-color: var(--azul-escuro);
+
+    transform: translateY(-1px);
+}
+
+.botao-nova-tarefa svg {
+    width: 18px;
+    height: 18px;
+}
+
+
+/* =========================
+   BARRA DE PROGRESSO
+========================= */
+
+.pagina-tarefas .quadro-progresso {
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    margin: 22px 0 24px;
+
+    padding: 14px 18px;
+
+    border-radius: 14px;
+
+    background-color: var(--cinza-fundo);
+}
+
+.progresso-texto {
+    font-size: 14px;
+
+    color: var(--cinza-suave);
+
+    white-space: nowrap;
+}
+
+.progresso-texto strong {
+    color: var(--cinza-texto);
+}
+
+.pagina-tarefas .progresso-barra {
+    flex: 1;
+
+    height: 10px;
+
+    border-radius: 999px;
+
+    background-color: var(--cinza-borda);
+
+    overflow: hidden;
+}
+
+.pagina-tarefas .progresso-preenchido {
+    height: 100%;
+
+    width: 0;
+
+    border-radius: 999px;
+
+    background-color: var(--azul);
+
+    transition: width 0.4s ease;
+}
+
+.progresso-porcentagem {
+    min-width: 42px;
+
+    text-align: right;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    color: var(--azul);
+}
+
+
+/* =========================
+   AS TRÊS COLUNAS
+========================= */
+
+.colunas {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+
+    align-items: start;
+}
+
+.pagina-tarefas .coluna {
+    min-height: 360px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    border-radius: 18px;
+
+    background-color: var(--cinza-fundo);
+
+    border-top: 5px solid var(--cor-coluna);
+
+    overflow: hidden;
+}
+
+/* Cada coluna tem a sua cor */
+
+.coluna-afazer {
+    --cor-coluna: var(--cinza);
+    --cor-coluna-clara: rgb(232, 232, 240);
+}
+
+.coluna-fazendo {
+    --cor-coluna: var(--laranja);
+    --cor-coluna-clara: var(--laranja-claro);
+}
+
+.coluna-concluido {
+    --cor-coluna: var(--azul);
+    --cor-coluna-clara: var(--azul-claro);
+}
+
+
+.coluna-topo {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 16px 14px 12px 18px;
+}
+
+.pagina-tarefas .coluna-ponto {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background-color: var(--cor-coluna);
+}
+
+.pagina-tarefas .coluna-titulo {
+    font-size: 16px;
+
+    font-weight: 800;
+
+    color: var(--cinza-texto);
+}
+
+.pagina-tarefas .coluna-contador {
+    min-width: 26px;
+    height: 24px;
+
+    padding: 0 8px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 999px;
+
+    background-color: var(--cor-coluna-clara);
+
+    color: var(--cinza-texto);
+
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+.coluna-adicionar {
+    width: 34px;
+    height: 34px;
+
+    margin-left: auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 10px;
+
+    color: var(--cinza-suave);
+
+    cursor: pointer;
+
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.pagina-tarefas .coluna-adicionar:hover {
+    background-color: var(--branco);
+
+    color: var(--azul);
+}
+
+.coluna-adicionar svg {
+    width: 20px;
+    height: 20px;
+}
+
+.coluna-lista {
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    padding: 4px 12px 14px;
+}
+
+
+/* Coluna vazia */
+
+.coluna-vazia {
+    flex: 1;
+
+    min-height: 150px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 20px;
+
+    border: 2px dashed var(--cinza-borda);
+
+    border-radius: 14px;
+
+    text-align: center;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+
+    color: var(--cinza-suave);
+}
+
+.coluna-vazia svg {
+    width: 26px;
+    height: 26px;
+
+    color: var(--cor-coluna);
+}
+
+
+/* =========================
+   CARTÃO DE TAREFA
+========================= */
+
+.pagina-tarefas .cartao {
+    padding: 14px 14px 12px;
+
+    border: 1px solid var(--cinza-borda);
+
+    border-radius: 14px;
+
+    background-color: var(--branco);
+
+    box-shadow: 0 2px 6px rgba(20, 20, 45, 0.05);
+
+    transition: box-shadow 0.2s, transform 0.2s;
+
+    animation: cartao-entrar 0.25s ease-out;
+}
+
+.pagina-tarefas .cartao:hover {
+    box-shadow: 0 8px 20px rgba(20, 20, 45, 0.1);
+
+    transform: translateY(-2px);
+}
+
+@keyframes cartao-entrar {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.cartao-topo {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 8px;
+}
+
+.pagina-tarefas .cartao-titulo {
+    flex: 1;
+
+    padding-top: 6px;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    line-height: 1.35;
+
+    color: var(--cinza-texto);
+
+    word-break: break-word;
+}
+
+/* Tarefa concluída: título riscado e mais claro */
+
+.coluna-concluido .cartao-titulo {
+    color: var(--cinza-suave);
+
+    text-decoration: line-through;
+
+    text-decoration-color: var(--azul);
+}
+
+.cartao-acoes {
+    display: flex;
+
+    gap: 2px;
+}
+
+.botao-icone {
+    min-width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 9px;
+
+    color: var(--cinza-suave);
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.botao-icone svg {
+    width: 17px;
+    height: 17px;
+}
+
+.pagina-tarefas .botao-icone:hover {
+    background-color: var(--azul-claro);
+
+    color: var(--azul);
+}
+
+.pagina-tarefas .botao-icone.excluir:hover {
+    background-color: var(--laranja-claro);
+
+    color: var(--laranja-texto);
+}
+
+.pagina-tarefas .botao-icone.confirmando,
+.pagina-tarefas .botao-icone.confirmando:hover {
+    padding: 0 10px;
+
+    background-color: var(--laranja);
+
+    color: var(--cinza-texto);
+}
+
+
+/* Etiqueta da data */
+
+.pagina-tarefas .cartao-data {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin-top: 8px;
+
+    padding: 4px 10px;
+
+    border-radius: 999px;
+
+    background-color: var(--cinza-fundo);
+
+    color: var(--cinza-suave);
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+.cartao-data svg {
+    width: 14px;
+    height: 14px;
+}
+
+.pagina-tarefas .cartao-data.atrasada {
+    background-color: var(--laranja);
+
+    color: var(--cinza-texto);
+}
+
+.pagina-tarefas .cartao-data.hoje {
+    background-color: var(--laranja-claro);
+
+    color: var(--laranja-texto);
+}
+
+.pagina-tarefas .cartao-data.concluida {
+    background-color: var(--azul-claro);
+
+    color: var(--azul-escuro);
+}
+
+
+/* Botões de mover entre colunas */
+
+.cartao-mover {
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 12px;
+
+    padding-top: 12px;
+
+    border-top: 1px solid var(--cinza-borda);
+}
+
+.botao-mover {
+    height: 36px;
+
+    padding: 0 12px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.botao-mover svg {
+    width: 16px;
+    height: 16px;
+}
+
+.pagina-tarefas .botao-mover.voltar {
+    border: 1px solid var(--cinza-borda);
+
+    background-color: var(--branco);
+
+    color: var(--cinza-suave);
+}
+
+.pagina-tarefas .botao-mover.voltar:hover {
+    border-color: var(--cinza);
+
+    color: var(--cinza-texto);
+}
+
+.pagina-tarefas .botao-mover.avancar {
+    margin-left: auto;
+
+    border: none;
+
+    background-color: var(--azul);
+
+    color: var(--branco);
+}
+
+.pagina-tarefas .botao-mover.avancar:hover {
+    background-color: var(--azul-escuro);
+}
+
+
+/* =========================
+   MODAL: NOVA / EDITAR TAREFA
+========================= */
+
+.modal-tarefa-fundo {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    padding: 20px;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background-color: rgba(20, 20, 45, 0.55);
+
+    z-index: 1000;
+}
+
+.modal-tarefa-fundo.aberto {
+    display: flex;
+}
+
+.modal-tarefa-fundo .modal-tarefa {
+    width: 100%;
+    max-width: 440px;
+
+    padding: 24px;
+
+    background-color: var(--branco);
+
+    color: var(--cinza-texto);
+
+    border-radius: 20px;
+
+    box-shadow: 0 24px 60px rgba(20, 20, 45, 0.35);
+
+    text-align: left;
+
+    font-family: sans-serif;
+
+    animation: modal-tarefa-entrar 0.22s ease-out;
+}
+
+@keyframes modal-tarefa-entrar {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.modal-tarefa-topo {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+.modal-tarefa-fundo .modal-tarefa-titulo {
+    font-size: 20px;
+
+    font-weight: 800;
+
+    color: var(--cinza-texto);
+}
+
+.botao-fechar-modal {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 10px;
+
+    color: var(--cinza-suave);
+
+    cursor: pointer;
+}
+
+.modal-tarefa-fundo .botao-fechar-modal:hover {
+    background-color: var(--cinza-fundo);
+}
+
+.modal-tarefa label,
+.modal-tarefa .rotulo {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: var(--cinza-suave);
+}
+
+.modal-tarefa-fundo .modal-tarefa input[type="text"],
+.modal-tarefa-fundo .modal-tarefa input[type="date"] {
+    width: 100%;
+    height: 48px;
+
+    margin-bottom: 16px;
+
+    padding: 0 14px;
+
+    border: 1.5px solid var(--cinza-borda);
+
+    border-radius: 12px;
+
+    background-color: var(--cinza-fundo);
+
+    color: var(--cinza-texto);
+
+    font-size: 16px;
+
+    font-family: inherit;
+
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.modal-tarefa-fundo .modal-tarefa input[type="text"]:focus,
+.modal-tarefa-fundo .modal-tarefa input[type="date"]:focus {
+    outline: none;
+
+    border-color: var(--azul);
+
+    background-color: var(--branco);
+
+    box-shadow: 0 0 0 4px rgba(89, 89, 189, 0.15);
+}
+
+
+/* Escolha da coluna (três botões lado a lado) */
+
+.escolha-coluna {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 8px;
+
+    margin-bottom: 8px;
+}
+
+.escolha-coluna input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+.modal-tarefa-fundo .escolha-coluna label {
+    height: 42px;
+
+    margin: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    border: 1.5px solid var(--cinza-borda);
+
+    border-radius: 12px;
+
+    color: var(--cinza-texto);
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.escolha-coluna .bolinha {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+}
+
+.modal-tarefa-fundo .bolinha.afazer {
+    background-color: var(--cinza);
+}
+
+.modal-tarefa-fundo .bolinha.fazendo {
+    background-color: var(--laranja);
+}
+
+.modal-tarefa-fundo .bolinha.concluido {
+    background-color: var(--azul);
+}
+
+.modal-tarefa-fundo .escolha-coluna input:checked + label {
+    border-color: var(--azul);
+
+    background-color: var(--azul-claro);
+}
+
+.escolha-coluna input:focus-visible + label {
+    box-shadow: 0 0 0 4px rgba(89, 89, 189, 0.2);
+}
+
+.modal-tarefa-aviso {
+    min-height: 18px;
+
+    margin-top: 4px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: var(--laranja-texto);
+}
+
+.modal-tarefa-botoes {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 10px;
+}
+
+.modal-tarefa-botoes button {
+    height: 46px;
+
+    padding: 0 20px;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s;
+}
+
+.modal-tarefa-fundo .botao-cancelar {
+    border: 1px solid var(--cinza-borda);
+
+    background-color: var(--cinza-fundo);
+
+    color: var(--cinza-texto);
+}
+
+.modal-tarefa-fundo .botao-cancelar:hover {
+    background-color: var(--cinza-borda);
+}
+
+.modal-tarefa-fundo .botao-salvar {
+    border: none;
+
+    background-color: var(--azul);
+
+    color: var(--branco);
+}
+
+.modal-tarefa-fundo .botao-salvar:hover {
+    background-color: var(--azul-escuro);
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1000px) {
+
+    .colunas {
+        gap: 12px;
+    }
+
+    .pagina-tarefas .quadro {
+        padding: 22px;
+    }
+}
+
+
+/* =========================
+   CELULAR / APLICATIVO
+   As colunas viram "páginas" que deslizam para o lado
+========================= */
+
+@media (max-width: 760px) {
+
+    .conteudo-da-pagina.pagina-tarefas {
+        padding: 90px 12px 24px;
+    }
+
+
+    .pagina-tarefas .quadro {
+        padding: 20px 16px;
+
+        border-radius: 20px;
+    }
+
+
+    .pagina-tarefas .quadro-titulo {
+        font-size: 22px;
+    }
+
+    .quadro-subtitulo {
+        font-size: 14px;
+    }
+
+    .pagina-tarefas .botao-nova-tarefa {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+
+    .pagina-tarefas .quadro-progresso {
+        flex-wrap: wrap;
+
+        gap: 10px;
+    }
+
+    .pagina-tarefas .progresso-barra {
+        flex-basis: 100%;
+
+        order: 3;
+    }
+
+
+    .colunas {
+        display: flex;
+
+        gap: 12px;
+
+        margin: 0 -16px;
+
+        padding: 0 16px 10px;
+
+        overflow-x: auto;
+
+        scroll-snap-type: x mandatory;
+
+        scroll-padding: 0 16px;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .pagina-tarefas .coluna {
+        flex: 0 0 86%;
+
+        min-height: 300px;
+
+        scroll-snap-align: start;
+    }
+
+
+    /* Dedo precisa de botões maiores */
+
+    .botao-icone {
+        min-width: 40px;
+        height: 40px;
+    }
+
+    .botao-mover {
+        height: 40px;
+    }
+
+
+    .modal-tarefa-fundo {
+        padding: 0;
+
+        align-items: flex-end;
+    }
+
+    .modal-tarefa-fundo .modal-tarefa {
+        max-width: none;
+
+        border-radius: 22px 22px 0 0;
+
+        padding: 26px 18px calc(20px + env(safe-area-inset-bottom));
+
+        animation-name: modal-tarefa-subir;
+    }
+
+    .modal-tarefa-botoes button {
+        flex: 1;
+    }
+}
+
+@keyframes modal-tarefa-subir {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: none;
+    }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    .pagina-tarefas .cartao,
+    .modal-tarefa-fundo .modal-tarefa {
+        animation: none;
+    }
+
+    .pagina-tarefas .cartao:hover {
+        transform: none;
+    }
+}
