@@ -43,6 +43,18 @@ urlpatterns = [
     ),
 
     path(
+        'editar-atividade/',
+        views.editar_atividade,
+        name='editar_atividade'
+    ),
+
+    path(
+        'excluir-atividade/',
+        views.excluir_atividade,
+        name='excluir_atividade'
+    ),
+
+    path(
     'perfil/atualizar/',
     views.atualizar_perfil,
     name='atualizar_perfil'
