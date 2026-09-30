@@ -48,25 +48,25 @@ function numeroBonito(numero) {
 
 function abrirJanelaSubAtividades(celula) {
 
-    chaveSubAberta = celula.dataset.disciplina + "-" + celula.dataset.bimestre;
+    chaveSubAberta =
+        celula.dataset.disciplina +
+        "-" +
+        celula.dataset.bimestre;
 
     bimestreSubAberto = celula.dataset.bimestre;
 
-    if (!subAtividadesPorNota[chaveSubAberta]) {
-        subAtividadesPorNota[chaveSubAberta] = [];
-    }
-
-
     document.getElementById("janela-sub-subtitulo").textContent =
-        celula.dataset.nome + " · " + bimestreSubAberto + "º bimestre" +
-        " (vale " + VALOR_BIMESTRE_SUB[bimestreSubAberto] + " pts)";
+        celula.dataset.nome +
+        " · " +
+        bimestreSubAberto +
+        "º bimestre" +
+        " (vale " +
+        VALOR_BIMESTRE_SUB[bimestreSubAberto] +
+        " pts)";
 
     document.getElementById("form-sub").reset();
 
     document.getElementById("form-sub-aviso").textContent = "";
-
-
-    desenharSubAtividades();
 
     cliqueComecouNoFundoSub = false;
 
@@ -74,6 +74,7 @@ function abrirJanelaSubAtividades(celula) {
 
     document.body.style.overflow = "hidden";
 
+    buscarSubAtividades(celula);
 }
 
 
@@ -111,6 +112,50 @@ document.addEventListener("keydown", evento => {
     }
 
 });
+
+function buscarSubAtividades(celula) {
+
+    const url =
+        urlListarSubAtividades +
+        "?atividade=" +
+        encodeURIComponent(celula.dataset.atividade);
+
+    fetch(url)
+
+        .then(resposta => {
+
+            if (!resposta.ok) {
+                throw new Error(
+                    "Não foi possível carregar as sub-atividades."
+                );
+            }
+
+            return resposta.json();
+
+        })
+
+        .then(dados => {
+
+            subAtividadesPorNota[chaveSubAberta] =
+                dados.subatividades || [];
+
+            desenharSubAtividades();
+
+        })
+
+        .catch(erro => {
+
+            console.error(erro);
+
+            subAtividadesPorNota[chaveSubAberta] = [];
+
+            document.getElementById("form-sub-aviso").textContent =
+                erro.message;
+
+            desenharSubAtividades();
+
+        });
+}
 
 
 /* =========================

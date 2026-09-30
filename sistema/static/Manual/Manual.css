@@ -44,14 +44,7 @@ html {
     text-align: left;
 
     /* A mesma foto laranja do login */
-    background: rgb(245, 122, 28) url("../LoginPerfil/fundo-laranja.webp") center top / cover no-repeat;
-}
-
-@media (min-width: 900px) {
-
-    .conteudo-da-pagina.pagina-manual {
-        background-attachment: fixed;
-    }
+    background-color: rgba(255, 140, 0, 0.856);
 }
 
 /*

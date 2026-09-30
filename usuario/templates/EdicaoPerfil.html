@@ -1,25 +1,16 @@
 {% load static %}
 
 <!DOCTYPE html>
-
 <html lang="pt-br">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyPlan | Perfil do Usuário</title>
 
-    <title>StudyPlan - Perfil do Usuário</title>
-
-    <link rel="stylesheet"
-          href="{% static 'EdicaoPerfil/EdicaoPerfil.css' %}">
-
-    <link rel="stylesheet"
-          href="{% static 'PaginaHome/PaginaHome.css' %}">
+    <link rel="stylesheet" href="{% static 'PaginaHome/PaginaHome.css' %}">
+    <link rel="stylesheet" href="{% static 'EdicaoPerfil/EdicaoPerfil.css' %}">
 
     <script src="https://unpkg.com/lucide@latest"></script>
-
 </head>
 
 <body>
@@ -28,471 +19,414 @@
 
         <div class="app-card">
 
+            <aside class="card-banner">
+                <div class="brand">
+
+                </div>
+
+                <div class="avatar-simple-container">
+                    <div class="avatar-circle">
+                        <i data-lucide="user" class="avatar-placeholder-icon"></i>
+                    </div>
+
+                    <h3 id="display-sidebar-nome">
+                        {{ user.username }}
+                    </h3>
+
+                    <p id="display-sidebar-curso">
+                        {% if user.curso %}
+                            {{ user.curso.nome }}
+                        {% else %}
+                            Não informado
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="banner-content">
+                    <p>
+                        Planeje seus estudos e acompanhe sua rotina acadêmica no CEFET-MG.
+                    </p>
+                </div>
+            </aside>
+
             <main class="card-body">
 
                 <div class="section-header">
-
                     <div>
-
-                        <h2>
-                            Perfil do Usuário
-                        </h2>
-
-                        <p>
-                            Confira e atualize suas informações pessoais e acadêmicas
-                        </p>
-
+                        <h2>Perfil do Usuário</h2>
+                        <p>Confira e atualize suas informações pessoais e acadêmicas</p>
                     </div>
 
+                    <button
+                        type="button"
+                        class="btn-edit"
+                        id="botao-editar"
+                        onclick="abrirModalEdicao()"
+                    >
+                        <i data-lucide="edit-3"></i>
+                        Editar Perfil
+                    </button>
                 </div>
 
-
-                <!-- INFORMAÇÕES PESSOAIS -->
-
                 <div class="info-group">
-
                     <div class="group-title">
-
                         <i data-lucide="user"></i>
-
-                        <h4>
-                            Informações Pessoais
-                        </h4>
-
+                        <h4>Informações Pessoais</h4>
                     </div>
-
 
                     <div class="info-row">
-
                         <div class="info-item">
-
-                            <label>
-                                Apelido
-                            </label>
-
-                            <div
-                                class="caixa-informacao"
-                                id="campo-nome"
-                            >
-
-                                <span id="nome-exibido">
-
-                                    {{ user.username }}
-
-                                </span>
-
-                                <input
-                                    type="text"
-                                    id="nome-input"
-                                    name="nome"
-                                    value="{{ user.username }}"
-                                    style="display: none;"
-                                >
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="info-item">
-
-                            <label>
-                                E-mail cadastrado
-                            </label>
-
-                            <div
-                                class="caixa-informacao"
-                                id="campo-email"
-                            >
-
-                                <span id="email-exibido">
-
-                                    {{ user.email }}
-
-                                </span>
-
-                                <input
-                                    type="email"
-                                    id="email-input"
-                                    name="email"
-                                    value="{{ user.email }}"
-                                    style="display: none;"
-                                >
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- INFORMAÇÕES ACADÊMICAS -->
-
-                <div class="info-group">
-
-                    <div class="group-title">
-
-                        <i data-lucide="graduation-cap"></i>
-
-                        <h4>
-                            Informações Acadêmicas
-                        </h4>
-
-                    </div>
-
-
-                    <div class="info-row">
-
-                        <div class="info-item">
-
-                            <label>
-                                Curso
-                            </label>
+                            <label>Apelido</label>
 
                             <div class="caixa-informacao">
-
-                                {% if user.curso %}
-
-                                    {{ user.curso.nome }}
-
-                                {% else %}
-
-                                    Não informado
-
-                                {% endif %}
-
+                                <span id="display-nome">
+                                    {{ user.username }}
+                                </span>
                             </div>
-
                         </div>
 
+                        <div class="info-item">
+                            <label>Senha de Acesso</label>
 
-                        <button
-                            type="button"
-                            class="btn-edit"
-                            id="botao-editar"
-                            onclick="ativarEdicao()"
-                        >
+                            <div class="caixa-informacao">
+                                <span>••••••••</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                            <i data-lucide="edit-3"></i>
-
-                            Editar Perfil
-
-                        </button>
-
+                <div class="info-group">
+                    <div class="group-title">
+                        <i data-lucide="graduation-cap"></i>
+                        <h4>Informações Acadêmicas</h4>
                     </div>
 
+                    <div class="info-row">
+                        <div class="info-item">
+                            <label>Curso</label>
+
+                            <div class="caixa-informacao">
+                                <span id="display-curso">
+                                    {% if user.curso %}
+                                        {{ user.curso.nome }}
+                                    {% else %}
+                                        Não informado
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <label>Disciplinas Cadastradas</label>
+
+                            <div class="caixa-informacao">
+                                <span id="display-disciplinas">
+                                    Nenhuma disciplina selecionada
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <div class="group-title">
+                        <i data-lucide="mail"></i>
+                        <h4>Informações de Acesso</h4>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-item full-width">
+                            <label>E-mail cadastrado</label>
+
+                            <div class="caixa-informacao">
+                                <span id="display-email">
+                                    {{ user.email }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </main>
-
         </div>
-
     </div>
 
+    <div class="modal-overlay" id="modalEdicao">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h3>Editar Perfil</h3>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    onclick="fecharModalEdicao()"
+                >
+                    &times;
+                </button>
+            </div>
+
+            <form id="formPerfil" onsubmit="salvarPerfil(event)">
+
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="input-nome">Apelido</label>
+
+                    <input
+                        type="text"
+                        id="input-nome"
+                        name="nome"
+                        value="{{ user.username }}"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="input-email">E-mail</label>
+
+                    <input
+                        type="email"
+                        id="input-email"
+                        name="email"
+                        value="{{ user.email }}"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="input-senha">Nova Senha</label>
+
+                    <input
+                        type="password"
+                        id="input-senha"
+                        name="senha"
+                        placeholder="Deixe vazio para manter a senha atual"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="select-curso">Curso</label>
+
+                    <select id="select-curso" name="curso">
+                        <option value="">Selecione um curso</option>
+
+                        {% for curso in cursos %}
+                            <option
+                                value="{{ curso.id }}"
+                                {% if user.curso and user.curso.id == curso.id %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ curso.nome }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Disciplinas</label>
+
+                    <div class="checkbox-grid" id="container-disciplinas">
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        onclick="fecharModalEdicao()"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="btn-save">
+                        Salvar Alterações
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
 
     <script>
+        const nomeUsuario = "{{ user.username }}";
+        const cursoUsuario = "{% if user.curso %}{{ user.curso.nome }}{% else %}Não informado{% endif %}";
 
-        const nomeUsuario =
-            "{{ user.username }}";
-
-
-        const cursoUsuario =
-            "{% if user.curso %}{{ user.curso.nome }}{% else %}Não informado{% endif %}";
-
-
-        const urlHome =
-            "{% url 'home' %}";
-
-
-        const urlPerfil =
-            "{% url 'perfil' %}";
-
-
-        const urlTarefas =
-            "{% url 'tarefas' %}";
-
-
-        const urlDuvidas =
-            "{% url 'duvidas' %}";
-
-
-        const urlEstatisticas =
-            "{% url 'estatisticas' %}";
-
-
-        const urlManual =
-            "{% url 'manual' %}";
-
-
+        const urlHome = "{% url 'home' %}";
+        const urlPerfil = "{% url 'perfil' %}";
+        const urlTarefas = "{% url 'tarefas' %}";
+        const urlDuvidas = "{% url 'duvidas' %}";
+        const urlEstatisticas = "{% url 'estatisticas' %}";
+        const urlManual = "{% url 'manual' %}";
     </script>
 
-
     <script>
-
-        function ativarEdicao() {
-
-            const nomeExibido =
-                document.getElementById("nome-exibido");
-
-
-            const nomeInput =
-                document.getElementById("nome-input");
-
-
-            const emailExibido =
-                document.getElementById("email-exibido");
-
-
-            const emailInput =
-                document.getElementById("email-input");
-
-
-            const campoNome =
-                document.getElementById("campo-nome");
-
-
-            const campoEmail =
-                document.getElementById("campo-email");
-
-
-            const botao =
-                document.getElementById("botao-editar");
-
-
-            nomeExibido.style.display =
-                "none";
-
-
-            nomeInput.style.display =
-                "block";
-
-
-            campoNome.classList.add(
-                "editando"
-            );
-
-
-            emailExibido.style.display =
-                "none";
-
-
-            emailInput.style.display =
-                "block";
-
-
-            campoEmail.classList.add(
-                "editando"
-            );
-
-
-            botao.innerHTML =
-                '<i data-lucide="save"></i> Salvar Alterações';
-
-
-            lucide.createIcons();
-
-
-            botao.onclick =
-                salvarEdicao;
-
+        function abrirModalEdicao() {
+            document.getElementById("modalEdicao").classList.add("ativo");
+            carregarDisciplinas();
         }
 
+        function fecharModalEdicao() {
+            document.getElementById("modalEdicao").classList.remove("ativo");
+        }
 
-        async function salvarEdicao() {
+        function carregarDisciplinas() {
+            const curso = document.getElementById("select-curso").value;
+            const container = document.getElementById("container-disciplinas");
 
-            const nomeInput =
-                document.getElementById("nome-input");
+            container.innerHTML = "";
 
+            if (!curso) {
+                return;
+            }
 
-            const emailInput =
-                document.getElementById("email-input");
+            fetch("{% url 'filtrar_disciplinas' %}?curso=" + encodeURIComponent(curso))
+                .then(resposta => resposta.json())
+                .then(dados => {
+                    const disciplinas = dados.disciplinas || [];
 
+                    disciplinas.forEach(disciplina => {
+                        const label = document.createElement("label");
+                        label.className = "checkbox-item";
 
-            const dados =
-                new FormData();
+                        const checkbox = document.createElement("input");
+                        checkbox.type = "checkbox";
+                        checkbox.name = "disciplinas";
+                        checkbox.value = disciplina.id;
 
+                        label.appendChild(checkbox);
+                        label.appendChild(
+                            document.createTextNode(" " + disciplina.nome)
+                        );
+
+                        container.appendChild(label);
+                    });
+                })
+                .catch(erro => {
+                    console.error(erro);
+                });
+        }
+
+        async function salvarPerfil(evento) {
+            evento.preventDefault();
+
+            const dados = new FormData();
 
             dados.append(
                 "nome",
-                nomeInput.value
+                document.getElementById("input-nome").value
             );
-
 
             dados.append(
                 "email",
-                emailInput.value
+                document.getElementById("input-email").value
             );
 
+            dados.append(
+                "senha",
+                document.getElementById("input-senha").value
+            );
+
+            dados.append(
+                "curso",
+                document.getElementById("select-curso").value
+            );
+
+            document
+                .querySelectorAll(
+                    "#container-disciplinas input[type='checkbox']:checked"
+                )
+                .forEach(checkbox => {
+                    dados.append("disciplinas", checkbox.value);
+                });
 
             try {
-
-                const resposta =
-                    await fetch(
-                        "{% url 'atualizar_perfil' %}",
-                        {
-                            method: "POST",
-
-                            body: dados,
-
-                            headers: {
-                                "X-CSRFToken":
-                                    obterCsrfToken()
-                            }
+                const resposta = await fetch(
+                    "{% url 'atualizar_perfil' %}",
+                    {
+                        method: "POST",
+                        body: dados,
+                        headers: {
+                            "X-CSRFToken": obterCsrfToken()
                         }
-                    );
+                    }
+                );
 
-
-                const resultado =
-                    await resposta.json();
-
+                const resultado = await resposta.json();
 
                 if (!resposta.ok) {
-
                     throw new Error(
-                        resultado.erro ||
-                        "Não foi possível salvar."
+                        resultado.erro || "Não foi possível salvar."
                     );
-
                 }
 
-
-                document.getElementById(
-                    "nome-exibido"
-                ).textContent =
+                document.getElementById("display-nome").textContent =
                     resultado.nome;
 
-
-                document.getElementById(
-                    "email-exibido"
-                ).textContent =
-                    resultado.email;
-
-
-                nomeInput.value =
+                document.getElementById("display-sidebar-nome").textContent =
                     resultado.nome;
 
-
-                emailInput.value =
+                document.getElementById("display-email").textContent =
                     resultado.email;
 
+                document.getElementById("display-curso").textContent =
+                    resultado.curso || "Não informado";
 
-                nomeInput.style.display =
-                    "none";
+                document.getElementById("display-sidebar-curso").textContent =
+                    resultado.curso || "Não informado";
 
+                if (resultado.disciplinas) {
+                    document.getElementById("display-disciplinas").textContent =
+                        resultado.disciplinas;
+                }
 
-                document.getElementById(
-                    "nome-exibido"
-                ).style.display =
-                    "inline";
+                document.getElementById("input-senha").value = "";
 
+                fecharModalEdicao();
 
-                emailInput.style.display =
-                    "none";
-
-
-                document.getElementById(
-                    "email-exibido"
-                ).style.display =
-                    "inline";
-
-
-                document.getElementById(
-                    "campo-nome"
-                ).classList.remove(
-                    "editando"
-                );
-
-
-                document.getElementById(
-                    "campo-email"
-                ).classList.remove(
-                    "editando"
-                );
-
-
-                const botao =
-                    document.getElementById(
-                        "botao-editar"
-                    );
-
-
-                botao.innerHTML =
-                    '<i data-lucide="edit-3"></i> Editar Perfil';
-
-
-                lucide.createIcons();
-
-
-                botao.onclick =
-                    ativarEdicao;
-
-            }
-
-
-            catch (erro) {
-
+            } catch (erro) {
                 console.error(erro);
-
 
                 alert(
                     erro.message ||
                     "Não foi possível salvar as alterações."
                 );
-
             }
-
         }
-
 
         function obterCsrfToken() {
+            const nome = "csrftoken=";
+            const partes = document.cookie.split(";");
 
-            const nome =
-                "csrftoken=";
+            for (let parte of partes) {
+                parte = parte.trim();
 
-
-            const partes =
-                document.cookie.split(";");
-
-
-            for (
-                let parte of partes
-            ) {
-
-                parte =
-                    parte.trim();
-
-
-                if (
-                    parte.startsWith(nome)
-                ) {
-
-                    return parte.substring(
-                        nome.length
-                    );
-
+                if (parte.startsWith(nome)) {
+                    return parte.substring(nome.length);
                 }
-
             }
 
-
             return "";
-
         }
 
-    </script>
-
-
-    <script src="{% static 'PaginaHome/menu.js' %}"></script>
-
-
-    <script>
+        document.getElementById("modalEdicao").addEventListener(
+            "click",
+            function(evento) {
+                if (evento.target === this) {
+                    fecharModalEdicao();
+                }
+            }
+        );
 
         lucide.createIcons();
+    </script>
 
+<script src="{% static 'PaginaHome/menu.js' %}"></script>
+
+    <script>
+        lucide.createIcons();
     </script>
 
 </body>
-
 </html>

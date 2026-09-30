@@ -23,56 +23,85 @@
             width: 100%;
             overflow-x: auto;
             margin-top: 30px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
         .tabela-notas {
             width: 100%;
             border-collapse: collapse;
-            background: white;
-            border-radius: 12px;
+            background: #f7f7fa;
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
         .tabela-notas th,
         .tabela-notas td {
             padding: 16px;
             text-align: center;
-            border-bottom: 1px solid #eeeeee;
+            border-bottom: 1px solid #e4e4e8;
         }
 
         .tabela-notas th {
-            background: #f5f5f5;
+            background-color: rgb(89, 89, 189);
+            color: white;
             font-weight: 600;
         }
 
-        .tabela-notas th:first-child,
+        .tabela-notas tbody tr {
+            background-color: #f7f7fa;
+            transition: background-color 0.2s ease;
+        }
+
+        .tabela-notas tbody tr:hover {
+            background-color: #f0f0f6;
+        }
+
+        .tabela-notas tbody tr:last-child td {
+            border-bottom: none;
+        }
+
         .tabela-notas td:first-child {
-            text-align: left;
+            color: #223488;
+            font-weight: 600;
+            font-size: 19px;
+        }
+
+        .celula-bimestre {
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .celula-bimestre:hover {
+            background-color: #ececf7;
         }
 
         .total {
             font-weight: bold;
+            color: #5965a8;
         }
 
         .falta {
             font-weight: bold;
+            color: #6f7190;
         }
 
         .sem-disciplinas {
             margin-top: 30px;
             padding: 25px;
-            background: white;
-            border-radius: 12px;
+            background: #f7f7fa;
+            border-radius: 14px;
             text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
     </style>
 
-    <!-- CRUD de notas (clicar na nota) -->
+    <!-- CRUD de notas -->
     <link rel="stylesheet" href="{% static 'PaginaHome/CrudNotas.css' %}">
 
-    <!-- Janela de sub-atividades (segurar a nota) -->
+    <!-- Janela de sub-atividades -->
     <link rel="stylesheet" href="{% static 'PaginaHome/JanelaSubAtividades.css' %}">
 
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -83,7 +112,7 @@
 
     <div class="conteudo-da-pagina">
 
-        <h1>Suas Notas</h1>
+        <h1>Gerenciamento de notas</h1>
 
         {% if tabela %}
 
@@ -100,17 +129,17 @@
 
                     <tr>
 
-                        <th>Nome</th>
+                        <th>Disciplina</th>
 
-                        <th>Bim. 1</th>
+                        <th>Bimestre 1</th>
 
-                        <th>Bim. 2</th>
+                        <th>Bimestre 2</th>
 
-                        <th>Bim. 3</th>
+                        <th>Bimestre 3</th>
 
-                        <th>Bim. 4</th>
+                        <th>Bimestre 4</th>
 
-                        <th>Total que você tem</th>
+                        <th>Total</th>
 
                         <th>Quanto falta para 60</th>
 
@@ -128,6 +157,9 @@
                             {{ disciplina.nome }}
                         </td>
 
+
+                        <!-- BIMESTRE 1 -->
+
                         <td
                             class="celula-bimestre"
                             tabindex="0"
@@ -136,8 +168,25 @@
                             data-bimestre="1"
                             title="Toque para ver as notas · segure para sub-atividades"
                         >
-                            {{ disciplina.bim1 }}
+
+                            {% if disciplina.bim1 < 12 %}
+
+                                <span style="color: #dc2626; font-weight: 600;">
+                                    {{ disciplina.bim1 }}
+                                </span>
+
+                            {% else %}
+
+                                <span style="color: #16a34a; font-weight: 600;">
+                                    {{ disciplina.bim1 }}
+                                </span>
+
+                            {% endif %}
+
                         </td>
+
+
+                        <!-- BIMESTRE 2 -->
 
                         <td
                             class="celula-bimestre"
@@ -147,8 +196,25 @@
                             data-bimestre="2"
                             title="Toque para ver as notas · segure para sub-atividades"
                         >
-                            {{ disciplina.bim2 }}
+
+                            {% if disciplina.bim2 < 18 %}
+
+                                <span style="color: #dc2626; font-weight: 600;">
+                                    {{ disciplina.bim2 }}
+                                </span>
+
+                            {% else %}
+
+                                <span style="color: #16a34a; font-weight: 600;">
+                                    {{ disciplina.bim2 }}
+                                </span>
+
+                            {% endif %}
+
                         </td>
+
+
+                        <!-- BIMESTRE 3 -->
 
                         <td
                             class="celula-bimestre"
@@ -158,8 +224,25 @@
                             data-bimestre="3"
                             title="Toque para ver as notas · segure para sub-atividades"
                         >
-                            {{ disciplina.bim3 }}
+
+                            {% if disciplina.bim3 < 12 %}
+
+                                <span style="color: #dc2626; font-weight: 600;">
+                                    {{ disciplina.bim3 }}
+                                </span>
+
+                            {% else %}
+
+                                <span style="color: #16a34a; font-weight: 600;">
+                                    {{ disciplina.bim3 }}
+                                </span>
+
+                            {% endif %}
+
                         </td>
+
+
+                        <!-- BIMESTRE 4 -->
 
                         <td
                             class="celula-bimestre"
@@ -169,12 +252,32 @@
                             data-bimestre="4"
                             title="Toque para ver as notas · segure para sub-atividades"
                         >
-                            {{ disciplina.bim4 }}
+
+                            {% if disciplina.bim4 < 18 %}
+
+                                <span style="color: #dc2626; font-weight: 600;">
+                                    {{ disciplina.bim4 }}
+                                </span>
+
+                            {% else %}
+
+                                <span style="color: #16a34a; font-weight: 600;">
+                                    {{ disciplina.bim4 }}
+                                </span>
+
+                            {% endif %}
+
                         </td>
+
+
+                        <!-- TOTAL -->
 
                         <td class="total">
                             {{ disciplina.total }}
                         </td>
+
+
+                        <!-- QUANTO FALTA -->
 
                         <td class="falta">
                             {{ disciplina.falta }}
@@ -207,7 +310,6 @@
 
     <!-- =========================
          JANELA DE NOTAS (CRUD)
-         abre ao CLICAR na nota
     ========================= -->
 
     <div id="janela-notas-fundo" class="janela-notas-fundo">
@@ -249,8 +351,6 @@
 
             <div class="janela-notas-corpo">
 
-                <!-- RESUMO DO BIMESTRE -->
-
                 <div class="resumo-bimestre">
 
                     <div class="resumo-linha">
@@ -263,15 +363,24 @@
 
                         </div>
 
-                        <span id="resumo-situacao" class="resumo-situacao vazio"></span>
+                        <span
+                            id="resumo-situacao"
+                            class="resumo-situacao vazio"
+                        ></span>
 
                     </div>
 
                     <div class="resumo-barra">
 
-                        <div id="resumo-barra-preenchida" class="resumo-barra-preenchida"></div>
+                        <div
+                            id="resumo-barra-preenchida"
+                            class="resumo-barra-preenchida"
+                        ></div>
 
-                        <span class="resumo-marca-media" title="Média (60%)"></span>
+                        <span
+                            class="resumo-marca-media"
+                            title="Média (60%)"
+                        ></span>
 
                     </div>
 
@@ -280,26 +389,32 @@
                 </div>
 
 
-                <!-- LISTA DE ATIVIDADES -->
-
                 <div>
 
                     <h3 class="lista-titulo">
                         Atividades lançadas
                     </h3>
 
-                    <div id="lista-atividades" class="lista-atividades"></div>
+                    <div
+                        id="lista-atividades"
+                        class="lista-atividades"
+                    ></div>
 
                 </div>
 
 
-                <!-- FORMULÁRIO: ADICIONAR / EDITAR -->
-
-                <form id="form-notas" class="form-notas" novalidate>
+                <form
+                    id="form-notas"
+                    class="form-notas"
+                    novalidate
+                >
 
                     {% csrf_token %}
 
-                    <h3 id="form-notas-titulo" class="form-notas-titulo">
+                    <h3
+                        id="form-notas-titulo"
+                        class="form-notas-titulo"
+                    >
                         Nova atividade
                     </h3>
 
@@ -340,7 +455,11 @@
 
                     </div>
 
-                    <p id="form-notas-aviso" class="form-notas-aviso" role="alert"></p>
+                    <p
+                        id="form-notas-aviso"
+                        class="form-notas-aviso"
+                        role="alert"
+                    ></p>
 
                     <div class="form-notas-botoes">
 
@@ -367,13 +486,12 @@
                 </form>
 
 
-                <!-- ATALHO PARA AS SUB-ATIVIDADES -->
-
                 <button
                     type="button"
                     class="atalho-sub"
                     onclick="irParaSubAtividades()"
                 >
+
                     <i data-lucide="layers"></i>
 
                     <span>
@@ -381,6 +499,7 @@
                     </span>
 
                     <i data-lucide="chevron-right"></i>
+
                 </button>
 
             </div>
@@ -392,7 +511,6 @@
 
     <!-- =========================
          JANELA DE SUB-ATIVIDADES
-         abre ao SEGURAR a nota
     ========================= -->
 
     <div id="janela-sub-fundo" class="janela-sub-fundo">
@@ -412,11 +530,17 @@
 
                 <div>
 
-                    <h2 id="janela-sub-titulo" class="janela-sub-titulo">
+                    <h2
+                        id="janela-sub-titulo"
+                        class="janela-sub-titulo"
+                    >
                         Sub-atividades
                     </h2>
 
-                    <p id="janela-sub-subtitulo" class="janela-sub-subtitulo"></p>
+                    <p
+                        id="janela-sub-subtitulo"
+                        class="janela-sub-subtitulo"
+                    ></p>
 
                 </div>
 
@@ -434,42 +558,66 @@
 
             <div class="janela-sub-corpo">
 
-                <!-- RESUMO -->
-
                 <div class="sub-resumo">
 
                     <div class="sub-resumo-item">
 
-                        <span class="sub-resumo-rotulo">Dividido</span>
+                        <span class="sub-resumo-rotulo">
+                            Dividido
+                        </span>
 
-                        <span id="sub-distribuido" class="sub-resumo-numero">0</span>
+                        <span
+                            id="sub-distribuido"
+                            class="sub-resumo-numero"
+                        >
+                            0
+                        </span>
 
                         <div class="sub-distribuido-barra">
-                            <div id="sub-distribuido-preenchido" class="sub-distribuido-preenchido"></div>
+
+                            <div
+                                id="sub-distribuido-preenchido"
+                                class="sub-distribuido-preenchido"
+                            ></div>
+
                         </div>
 
                     </div>
 
+
                     <div class="sub-resumo-item">
 
-                        <span class="sub-resumo-rotulo">Nota tirada</span>
+                        <span class="sub-resumo-rotulo">
+                            Nota tirada
+                        </span>
 
-                        <span id="sub-obtido" class="sub-resumo-numero">0</span>
+                        <span
+                            id="sub-obtido"
+                            class="sub-resumo-numero"
+                        >
+                            0
+                        </span>
 
                     </div>
 
+
                     <div class="sub-resumo-item">
 
-                        <span class="sub-resumo-rotulo">Aproveit.</span>
+                        <span class="sub-resumo-rotulo">
+                            Aproveit.
+                        </span>
 
-                        <span id="sub-aproveitamento" class="sub-resumo-numero">–</span>
+                        <span
+                            id="sub-aproveitamento"
+                            class="sub-resumo-numero"
+                        >
+                            –
+                        </span>
 
                     </div>
 
                 </div>
 
-
-                <!-- LISTA -->
 
                 <div>
 
@@ -477,14 +625,19 @@
                         Partes da nota
                     </h3>
 
-                    <div id="sub-lista" class="sub-lista"></div>
+                    <div
+                        id="sub-lista"
+                        class="sub-lista"
+                    ></div>
 
                 </div>
 
 
-                <!-- FORMULÁRIO -->
-
-                <form id="form-sub" class="form-sub" novalidate>
+                <form
+                    id="form-sub"
+                    class="form-sub"
+                    novalidate
+                >
 
                     <h3 class="form-sub-titulo">
                         Nova sub-atividade
@@ -508,6 +661,7 @@
 
                         </div>
 
+
                         <div>
 
                             <label for="sub-valor">
@@ -524,6 +678,7 @@
                             >
 
                         </div>
+
 
                         <div>
 
@@ -544,9 +699,16 @@
 
                     </div>
 
-                    <p id="form-sub-aviso" class="form-sub-aviso" role="alert"></p>
+                    <p
+                        id="form-sub-aviso"
+                        class="form-sub-aviso"
+                        role="alert"
+                    ></p>
 
-                    <button type="submit" class="botao-adicionar-sub">
+                    <button
+                        type="submit"
+                        class="botao-adicionar-sub"
+                    >
                         <i data-lucide="plus"></i>
                         Adicionar sub-atividade
                     </button>
@@ -594,8 +756,6 @@
             "{% url 'manual' %}";
 
 
-        /* URLs usadas pelo CrudNotas.js */
-
         const urlListarAtividades =
             "{% url 'listar_atividades' %}";
 
@@ -610,6 +770,12 @@
 
         const urlExcluirAtividade =
             "{% url 'excluir_atividade' %}";
+
+        const urlListarSubAtividades =
+            "{% url 'listar_subatividades' %}";
+
+        const urlCriarSubAtividade =
+            "{% url 'criar_subatividade' %}";
 
     </script>
 

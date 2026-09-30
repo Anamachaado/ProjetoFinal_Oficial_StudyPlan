@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
 
 from .models import Aluno
 from sistema.models import Curso, Serie, Disciplina
@@ -163,6 +164,7 @@ def perfil(request):
     )
 
 @login_required
+@login_required
 def atualizar_perfil(request):
 
     if request.method != 'POST':
@@ -176,6 +178,7 @@ def atualizar_perfil(request):
     nome = request.POST.get('nome', '').strip()
     email = request.POST.get('email', '').strip()
     curso_id = request.POST.get('curso')
+    senha = request.POST.get('senha', '').strip()
 
     if not nome:
         return JsonResponse(
@@ -214,7 +217,13 @@ def atualizar_perfil(request):
                 status=400
             )
 
+    if senha:
+        aluno.set_password(senha)
+
     aluno.save()
+
+    if senha:
+        update_session_auth_hash(request, aluno)
 
     return JsonResponse({
         'ok': True,
@@ -222,7 +231,6 @@ def atualizar_perfil(request):
         'email': aluno.email,
         'curso': aluno.curso.nome if aluno.curso else 'Não informado'
     })
-
 
 @login_required
 def tarefas(request):
@@ -486,3 +494,126 @@ def excluir_atividade(request):
         disciplina,
         bimestre
     )
+
+@login_required
+def listar_subatividades(request):
+    from sistema.models import SubAtividade
+
+    atividade_id = request.GET.get('atividade')
+
+    if not atividade_id:
+        return JsonResponse(
+            {'erro': 'Atividade não informada.'},
+            status=400
+        )
+
+    try:
+        atividade = request.user.atividades.get(
+            id=atividade_id
+        )
+    except Exception:
+        return JsonResponse(
+            {'erro': 'Atividade não encontrada.'},
+            status=404
+        )
+
+    subatividades = SubAtividade.objects.filter(
+        atividade=atividade
+    ).order_by('id')
+
+    return JsonResponse({
+        'subatividades': [
+            {
+                'id': sub.id,
+                'nome': sub.nome,
+                'valor': sub.valor,
+                'nota': sub.nota
+            }
+            for sub in subatividades
+        ]
+    })
+
+
+@login_required
+def criar_subatividade(request):
+    from sistema.models import SubAtividade, Atividade
+
+    if request.method != 'POST':
+        return JsonResponse(
+            {'erro': 'Método inválido.'},
+            status=405
+        )
+
+    atividade_id = request.POST.get('atividade')
+    nome = request.POST.get('nome', '').strip()
+    valor = request.POST.get('valor')
+    nota = request.POST.get('nota')
+
+    if not atividade_id or not nome or not valor or nota is None:
+        return JsonResponse(
+            {'erro': 'Preencha todos os campos.'},
+            status=400
+        )
+
+    try:
+        valor = float(valor)
+        nota = float(nota)
+    except ValueError:
+        return JsonResponse(
+            {'erro': 'Valor ou nota inválidos.'},
+            status=400
+        )
+
+    if valor <= 0:
+        return JsonResponse(
+            {'erro': 'O valor precisa ser maior que 0.'},
+            status=400
+        )
+
+    if nota < 0 or nota > valor:
+        return JsonResponse(
+            {'erro': 'A nota precisa estar entre 0 e o valor da atividade.'},
+            status=400
+        )
+
+    try:
+        atividade = request.user.atividades.get(
+            id=atividade_id
+        )
+    except Exception:
+        return JsonResponse(
+            {'erro': 'Atividade não encontrada.'},
+            status=404
+        )
+
+    total_distribuido = sum(
+        sub.valor
+        for sub in atividade.subatividades.all()
+    )
+
+    if total_distribuido + valor > atividade.valor + 0.001:
+        return JsonResponse(
+            {
+                'erro':
+                    'A soma das sub-atividades não pode ultrapassar '
+                    'o valor da atividade.'
+            },
+            status=400
+        )
+
+    sub = SubAtividade.objects.create(
+        atividade=atividade,
+        nome=nome,
+        valor=valor,
+        nota=nota
+    )
+
+    return JsonResponse({
+        'ok': True,
+        'subatividade': {
+            'id': sub.id,
+            'nome': sub.nome,
+            'valor': sub.valor,
+            'nota': sub.nota
+        }
+    })

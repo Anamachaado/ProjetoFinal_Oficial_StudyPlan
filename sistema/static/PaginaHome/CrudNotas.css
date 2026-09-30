@@ -932,3 +932,13 @@
         transition: none;
     }
 }
+
+.celula-bimestre.nota-vermelha {
+    color: #dc2626 !important;
+    font-weight: 600;
+}
+
+.celula-bimestre.nota-verde {
+    color: #16a34a !important;
+    font-weight: 600;
+}

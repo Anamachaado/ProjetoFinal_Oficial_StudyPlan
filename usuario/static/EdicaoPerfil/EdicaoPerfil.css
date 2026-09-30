@@ -5,571 +5,429 @@
 }
 
 :root {
-    --bg-dark: rgba(255, 140, 0, 0.856);
+    --bg-dark: #ec9731;
     --blue-primary: #223488;
     --blue-secondary: #314595;
-    --orange-accent: #f8c383;
+    --orange-accent: #ec9731;
     --bg-card: #ffffff;
     --text-dark: #1e293b;
     --text-muted: #64748b;
     --border-light: #e2e8f0;
 }
 
-
-/* ========================= */
-/* CONTEÚDO DO PERFIL */
-/* ========================= */
-
-.conteudo-da-pagina {
+body {
     background-color: var(--bg-dark);
+    font-family: sans-serif;
+    overflow-x: hidden;
+}
 
-    padding-top: 100px;
-    padding-bottom: 40px;
-
-    min-height: 100vh;
-
+header {
+    background-color: var(--blue-primary);
+    padding: 15px 20px;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2);
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
 
+.but-menu {
+    width: 45px;
+    height: 45px;
+    background-color: var(--orange-accent);
+    color: rgba(255, 255, 255, 0.973);
+    border: none;
+    border-radius: 8px;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
     align-items: center;
     justify-content: center;
+}
 
+.but-menu:hover {
+    background-color: #fff0db;
+}
+
+.texto {
+    flex: 1;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    color: #ffffff;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: normal;
+    color: #cbd5e1;
+}
+
+.Menu {
+    position: fixed;
+    top: 75px;
+    left: 0;
+    width: 250px;
+    height: calc(100vh - 75px);
+    padding: 20px;
+    background-color: var(--blue-primary);
+    color: rgb(241, 226, 206);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 9;
+}
+
+.Menu.aberto {
+    transform: translateX(0);
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgb(241, 226, 206);
+    text-decoration: none;
+    font-size: 18px;
+    padding: 12px 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+
+.menu-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+.menu-link.link-ativo {
+    background-color: rgba(255, 255, 255, 0.25);
+    font-weight: bold;
+    border-left: 4px solid white;
+}
+
+.conteudo-da-pagina {
+    padding-top: 100px;
+    padding-bottom: 40px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding-left: 20px;
     padding-right: 20px;
 }
 
-
-/* ========================= */
-/* CARTÃO */
-/* ========================= */
-
-.conteudo-da-pagina .app-card {
+.app-card {
     display: flex;
-
     width: 100%;
     max-width: 920px;
     min-height: 540px;
-
     background-color: var(--bg-card);
-
     border-radius: 24px;
-
     overflow: hidden;
-
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
 }
 
-
-/* ========================= */
-/* BANNER ORIGINAL */
-/* ========================= */
-
-.conteudo-da-pagina .card-banner {
+.card-banner {
     width: 42%;
-
-    background: linear-gradient(
-        135deg,
-        var(--blue-primary) 0%,
-        var(--blue-secondary) 100%
-    );
-
+    background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-secondary) 100%);
     padding: 35px 30px;
-
     display: flex;
     flex-direction: column;
-
     justify-content: space-between;
     align-items: center;
-
     text-align: center;
-
     color: #ffffff;
 }
 
-
-.conteudo-da-pagina .brand {
+.brand {
     display: flex;
-
     align-items: center;
-
     gap: 12px;
-
     width: 100%;
-
     justify-content: flex-start;
 }
 
-
-.conteudo-da-pagina .brand-icon {
+.brand-icon {
     background-color: rgba(255, 255, 255, 0.2);
-
     width: 38px;
     height: 38px;
-
     border-radius: 50%;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     color: #ffffff;
 }
 
-
-.conteudo-da-pagina .brand h2 {
+.brand h2 {
     font-size: 20px;
     font-weight: 700;
-
     color: #ffffff;
 }
 
-
-.conteudo-da-pagina .avatar-upload-container {
+.avatar-simple-container {
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
-    margin: 15px 0;
+    margin: 20px 0;
 }
 
-
-.conteudo-da-pagina .avatar-circle {
-    position: relative;
-
-    width: 110px;
-    height: 110px;
-
+.avatar-circle {
+    width: 70px;
+    height: 70px;
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
-
-    background-color: rgba(255, 255, 255, 0.25);
-
-    border: 3px solid #ffffff;
-
     display: flex;
-
-    justify-content: center;
     align-items: center;
-
-    margin-bottom: 15px;
-
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-}
-
-
-.conteudo-da-pagina .avatar-placeholder-icon {
-    width: 55px;
-    height: 55px;
-
-    color: #ffffff;
-}
-
-
-.conteudo-da-pagina .upload-badge {
-    position: absolute;
-
-    bottom: 0;
-    right: 0;
-
-    background-color: var(--orange-accent);
-
-    width: 34px;
-    height: 34px;
-
-    border-radius: 50%;
-
-    display: flex;
-
     justify-content: center;
-    align-items: center;
-
-    color: #ffffff;
-
-    border: 2px solid #ffffff;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.2s,
-        background-color 0.2s;
+    margin-bottom: 12px;
 }
 
-
-.conteudo-da-pagina .upload-badge:hover {
-    transform: scale(1.1);
-
-    background-color: #d8831e;
+.avatar-placeholder-icon {
+    width: 35px;
+    height: 35px;
 }
 
-
-.conteudo-da-pagina .upload-badge svg {
-    width: 16px;
-    height: 16px;
-}
-
-
-.conteudo-da-pagina .avatar-upload-container h3 {
-    font-size: 20px;
+.avatar-simple-container h3 {
+    font-size: 22px;
     font-weight: 700;
 }
 
-
-.conteudo-da-pagina .avatar-upload-container p {
-    font-size: 13px;
-
+.avatar-simple-container p {
+    font-size: 14px;
     opacity: 0.9;
-
-    margin-top: 2px;
+    margin-top: 4px;
 }
 
-
-.conteudo-da-pagina .banner-content p {
+.banner-content p {
     font-size: 13px;
-
     opacity: 0.88;
-
     line-height: 1.5;
 }
 
-
-/* ========================= */
-/* CORPO DO PERFIL */
-/* ========================= */
-
-.conteudo-da-pagina .card-body {
-    width: 100%;
-
+.card-body {
+    width: 58%;
     padding: 40px 35px;
-
     display: flex;
-
     flex-direction: column;
-
     gap: 18px;
-
     justify-content: center;
 }
 
-
-/* ========================= */
-/* CABEÇALHO */
-/* ========================= */
-
-.conteudo-da-pagina .section-header {
+.section-header {
     display: flex;
-
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-
     margin-bottom: 5px;
-
-    text-align: center;
 }
 
-
-/*
-    O PaginaHome.css possui um h2 global.
-    Esta regra específica impede que ele
-    diminua o título do perfil.
-*/
-
-.conteudo-da-pagina .section-header h2 {
+.section-header h2 {
     color: var(--text-dark);
-
-    font-family: sans-serif;
-
-    font-size: 30px;
-
-    font-weight: 700;
-
-    line-height: 1.2;
+    font-size: 22px;
 }
 
-
-/* ========================= */
-/* BOTÃO EDITAR */
-/* ========================= */
-
-.conteudo-da-pagina .btn-edit {
+.btn-edit {
     background-color: var(--blue-primary);
-
     color: #ffffff;
-
     border: none;
-
-    padding: 10px 16px;
-
+    padding: 8px 16px;
     border-radius: 10px;
-
-    font-family: sans-serif;
-
     font-weight: 600;
-
     font-size: 13px;
-
     cursor: pointer;
-
     display: flex;
-
     align-items: center;
-
-    justify-content: center;
-
     gap: 6px;
-
     transition: background-color 0.2s;
 }
 
-
-.conteudo-da-pagina .btn-edit:hover {
+.btn-edit:hover {
     background-color: var(--blue-secondary);
 }
 
-
-.conteudo-da-pagina .btn-edit svg {
-    width: 15px;
-    height: 15px;
-}
-
-
-/* ========================= */
-/* GRUPOS DE INFORMAÇÃO */
-/* ========================= */
-
-.conteudo-da-pagina .info-group {
+.info-group {
     background-color: #f8fafc;
-
     padding: 14px 18px;
-
     border-radius: 14px;
-
     border: 1px solid var(--border-light);
-
-    text-align: left;
 }
 
-
-/* ========================= */
-/* TÍTULO DOS GRUPOS */
-/* ========================= */
-
-.conteudo-da-pagina .group-title {
+.group-title {
     display: flex;
-
     align-items: center;
-
     gap: 8px;
-
     color: var(--blue-primary);
-
     margin-bottom: 8px;
 }
 
-
-.conteudo-da-pagina .group-title svg {
-    width: 16px;
-    height: 16px;
-}
-
-
-.conteudo-da-pagina .group-title h4 {
+.group-title h4 {
     font-size: 13px;
-
     font-weight: 700;
-
-    color: var(--blue-primary);
 }
 
-
-/* ========================= */
-/* LINHA DOS CAMPOS */
-/* ========================= */
-
-.conteudo-da-pagina .info-row {
+.info-row {
     display: flex;
-
     gap: 20px;
-
-    align-items: flex-end;
 }
 
-
-.conteudo-da-pagina .info-item {
+.info-item {
     flex: 1;
 }
 
-
-.conteudo-da-pagina .info-item.full-width {
+.info-item.full-width {
     width: 100%;
 }
 
-
-.conteudo-da-pagina .info-item label {
-    display: block;
-
+.info-item label {
     font-size: 11px;
-
     color: var(--text-muted);
-
     font-weight: 600;
-
     text-transform: uppercase;
-
-    margin-bottom: 6px;
 }
 
-
-/* ========================= */
-/* TEXTO DOS CAMPOS */
-/* ========================= */
-
-.conteudo-da-pagina .info-item p {
+.info-item p {
     font-size: 14px;
-
     color: var(--text-dark);
-
     font-weight: 600;
-
     margin-top: 2px;
 }
 
-
-/* ========================= */
-/* CAIXAS EDITÁVEIS */
-/* ========================= */
-
-.conteudo-da-pagina .caixa-informacao {
-    width: 100%;
-
-    min-height: 42px;
-
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
-
+    justify-content: center;
     align-items: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
 
-    padding: 10px 12px;
+.modal-overlay.ativo {
+    opacity: 1;
+    pointer-events: auto;
+}
 
+.modal-content {
     background-color: #ffffff;
-
-    border: 1px solid var(--border-light);
-
-    border-radius: 8px;
-
-    color: var(--text-dark);
-
-    font-size: 14px;
-
-    font-weight: 600;
-
-    text-align: left;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 25px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-light);
+}
 
-.conteudo-da-pagina .caixa-informacao input {
-    width: 100%;
+.modal-header h3 {
+    font-size: 20px;
+    color: var(--blue-primary);
+}
 
+.btn-close {
+    background: none;
     border: none;
+    font-size: 24px;
+    color: var(--text-muted);
+    cursor: pointer;
+}
 
-    outline: none;
+.form-group {
+    margin-bottom: 16px;
+}
 
-    background: transparent;
-
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
     color: var(--text-dark);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
 
-    font-family: inherit;
-
+.form-group input, 
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
     font-size: 14px;
-
-    font-weight: 600;
+    outline: none;
 }
 
-
-.conteudo-da-pagina .caixa-informacao.editando {
+.form-group input:focus, 
+.form-group select:focus {
     border-color: var(--blue-primary);
-
-    box-shadow:
-        0 0 0 2px rgba(34, 52, 136, 0.08);
 }
 
-
-/* ========================= */
-/* BOTÃO AO LADO DO CURSO */
-/* ========================= */
-
-.conteudo-da-pagina .info-row .btn-edit {
-    align-self: flex-end;
-
-    flex-shrink: 0;
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid var(--border-light);
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f8fafc;
 }
 
-
-/* ========================= */
-/* RESPONSIVIDADE */
-/* ========================= */
-
-@media (max-width: 700px) {
-
-    .conteudo-da-pagina {
-        padding-top: 90px;
-
-        padding-left: 15px;
-        padding-right: 15px;
-
-        padding-bottom: 30px;
-    }
-
-
-    .conteudo-da-pagina .app-card {
-        min-height: auto;
-    }
-
-
-    .conteudo-da-pagina .card-body {
-        padding: 30px 25px;
-    }
-
-
-    .conteudo-da-pagina .info-row {
-        flex-direction: column;
-
-        gap: 15px;
-    }
-
-
-    .conteudo-da-pagina .info-row .btn-edit {
-        width: 100%;
-
-        align-self: stretch;
-    }
-
-
-    .conteudo-da-pagina .section-header h2 {
-        font-size: 26px;
-    }
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-dark);
+    cursor: pointer;
 }
 
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
 
-@media (max-width: 450px) {
+.btn-cancel {
+    background-color: #e2e8f0;
+    color: var(--text-dark);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
 
-    .conteudo-da-pagina {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
+.btn-save {
+    background-color: var(--blue-primary);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
 
-
-    .conteudo-da-pagina .card-body {
-        padding: 25px 18px;
-    }
-
-
-    .conteudo-da-pagina .section-header h2 {
-        font-size: 23px;
-    }
-
-
-    .conteudo-da-pagina .info-group {
-        padding: 15px;
-    }
+.btn-save:hover {
+    background-color: var(--blue-secondary);
 }

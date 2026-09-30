@@ -59,4 +59,16 @@ urlpatterns = [
     views.atualizar_perfil,
     name='atualizar_perfil'
     ),
+    path(
+        'criar-subatividade/',
+        views.criar_subatividade,
+        name='criar_subatividade'
+    ),
+
+    path(
+        'listar-subatividades/',
+        views.listar_subatividades,
+        name='listar_subatividades'
+    ),
+
 ]
